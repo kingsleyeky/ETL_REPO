@@ -178,7 +178,7 @@
 												"datasetParameters": {
 													"source1": {
 														"fileName": {
-															"value": "item().name",
+															"value": "@item().name",
 															"type": "Expression"
 														}
 													}
