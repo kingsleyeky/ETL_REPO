@@ -1,0 +1,12 @@
+{
+	"name": "api_to_db_dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "db_link",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
