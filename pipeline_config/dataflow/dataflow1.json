@@ -15,7 +15,10 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "flatten1"
+					"name": "unrollByChecks"
+				},
+				{
+					"name": "unrollByGuests"
 				}
 			],
 			"scriptLines": [
@@ -75,8 +78,6 @@
 				"          checksTotalAmount = checks.totalAmount,",
 				"          paymentsAmount = checks.paymentsAmount,",
 				"          balanceAmount = checks.balanceAmount,",
-				"          items = checks.items,",
-				"          voidedItems = checks.voidedItems,",
 				"          guests = checks.guests,",
 				"          surcharges = checks.surcharges,",
 				"          payments = checks.payments,",
@@ -86,7 +87,42 @@
 				"          customer",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1"
+				"     skipDuplicateMapOutputs: false) ~> unrollByChecks",
+				"unrollByChecks foldDown(unroll(guests),",
+				"     mapColumn(",
+				"          id,",
+				"          name,",
+				"          deleted,",
+				"          locationId,",
+				"          orderTypeId,",
+				"          orderTypeName,",
+				"          createdByEmployeeId,",
+				"          createdByEmployeeName,",
+				"          businessDate,",
+				"          createdAt,",
+				"          closedAt,",
+				"          orderNumber,",
+				"          tableNumber,",
+				"          scheduled,",
+				"          releasedAt,",
+				"          ownerInfo,",
+				"          totalAmount,",
+				"          balanceDueAmount,",
+				"          gratuityAmount,",
+				"          checksTotalAmount,",
+				"          paymentsAmount,",
+				"          balanceAmount,",
+				"          guestsName = guests.name,",
+				"          items = guests.items,",
+				"          surcharges,",
+				"          payments,",
+				"          updatedAt,",
+				"          teamId,",
+				"          dayPart,",
+				"          customer",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> unrollByGuests"
 			]
 		}
 	}
