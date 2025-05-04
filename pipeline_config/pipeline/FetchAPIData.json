@@ -89,10 +89,6 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"dataflow": {
-									"referenceName": "TransformOrdersData",
-									"type": "DataFlowReference"
-								},
 								"compute": {
 									"coreCount": 8,
 									"computeType": "General"
