@@ -1,0 +1,335 @@
+{
+	"name": "MetadataDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "raw_spoton_data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "locations_data",
+				"fileSystem": "raw-spoton-data"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"deleted": {
+					"type": "boolean"
+				},
+				"locationId": {
+					"type": "string"
+				},
+				"orderTypeId": {
+					"type": "string"
+				},
+				"orderTypeName": {
+					"type": "string"
+				},
+				"createdByEmployeeId": {
+					"type": "string"
+				},
+				"createdByEmployeeName": {
+					"type": "string"
+				},
+				"businessDate": {
+					"type": "string"
+				},
+				"createdAt": {
+					"type": "string"
+				},
+				"closedAt": {
+					"type": "string"
+				},
+				"orderNumber": {
+					"type": "string"
+				},
+				"tableNumber": {
+					"type": "string"
+				},
+				"scheduled": {
+					"type": "boolean"
+				},
+				"releasedAt": {
+					"type": "null"
+				},
+				"ownerInfo": {
+					"type": "object",
+					"properties": {
+						"employeeId": {
+							"type": "string"
+						},
+						"employeeName": {
+							"type": "string"
+						},
+						"jobPositionId": {
+							"type": "string"
+						}
+					}
+				},
+				"totalAmount": {
+					"type": "string"
+				},
+				"balanceDueAmount": {
+					"type": "string"
+				},
+				"checks": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"gratuityAmount": {
+								"type": "string"
+							},
+							"totalAmount": {
+								"type": "string"
+							},
+							"paymentsAmount": {
+								"type": "string"
+							},
+							"balanceAmount": {
+								"type": "string"
+							},
+							"items": {
+								"type": "array"
+							},
+							"voidedItems": {
+								"type": "array"
+							},
+							"guests": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"items": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"menuItemId": {
+														"type": "string"
+													},
+													"name": {
+														"type": "string"
+													},
+													"createdAt": {
+														"type": "string"
+													},
+													"quantity": {
+														"type": "string"
+													},
+													"preDiscountsAmount": {
+														"type": "string"
+													},
+													"discountsAmount": {
+														"type": "string"
+													},
+													"postDiscountsAmount": {
+														"type": "string"
+													},
+													"taxesAmount": {
+														"type": "string"
+													},
+													"totalAmount": {
+														"type": "string"
+													},
+													"discounts": {
+														"type": "array"
+													},
+													"taxes": {
+														"type": "array",
+														"items": {
+															"type": "object",
+															"properties": {
+																"taxId": {
+																	"type": "string"
+																},
+																"taxName": {
+																	"type": "string"
+																},
+																"percentage": {
+																	"type": "string"
+																},
+																"isInclusive": {
+																	"type": "boolean"
+																},
+																"amount": {
+																	"type": "string"
+																}
+															}
+														}
+													},
+													"void": {
+														"type": "null"
+													},
+													"subItems": {
+														"type": "array"
+													},
+													"modifiers": {
+														"type": "array",
+														"items": {
+															"type": "object",
+															"properties": {
+																"modifierId": {
+																	"type": "string"
+																},
+																"modifierOptionId": {
+																	"type": "string"
+																},
+																"text": {
+																	"type": "string"
+																},
+																"preDiscountsAmount": {
+																	"type": "string"
+																},
+																"discountsAmount": {
+																	"type": "string"
+																},
+																"postDiscountsAmount": {
+																	"type": "string"
+																},
+																"taxesAmount": {
+																	"type": "string"
+																},
+																"totalAmount": {
+																	"type": "string"
+																},
+																"discounts": {
+																	"type": "array"
+																},
+																"taxes": {
+																	"type": "array",
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"taxId": {
+																				"type": "string"
+																			},
+																			"taxName": {
+																				"type": "string"
+																			},
+																			"percentage": {
+																				"type": "string"
+																			},
+																			"isInclusive": {
+																				"type": "boolean"
+																			},
+																			"amount": {
+																				"type": "string"
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													},
+													"giftCardIssueReload": {
+														"type": "boolean"
+													}
+												}
+											}
+										},
+										"voidedItems": {
+											"type": "array"
+										}
+									}
+								}
+							},
+							"surcharges": {
+								"type": "array"
+							},
+							"payments": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"paymentOptionId": {
+											"type": "string"
+										},
+										"paymentName": {
+											"type": "string"
+										},
+										"createdAt": {
+											"type": "string"
+										},
+										"businessDate": {
+											"type": "string"
+										},
+										"amount": {
+											"type": "string"
+										},
+										"surcharges": {
+											"type": "array"
+										},
+										"surchargesAmount": {
+											"type": "string"
+										},
+										"tipAmount": {
+											"type": "string"
+										},
+										"tipDeductionAmount": {
+											"type": "string"
+										},
+										"tipAppliedToEmployeeId": {
+											"type": "string"
+										},
+										"stationId": {
+											"type": "string"
+										},
+										"employeeId": {
+											"type": "string"
+										},
+										"employeeName": {
+											"type": "string"
+										},
+										"cardType": {
+											"type": "string"
+										},
+										"cardNumber": {
+											"type": "string"
+										},
+										"cardholderName": {
+											"type": "string"
+										}
+									}
+								}
+							},
+							"autoGratuityTaxes": {
+								"type": "array"
+							}
+						}
+					}
+				},
+				"updatedAt": {
+					"type": "string"
+				},
+				"teamId": {
+					"type": "string"
+				},
+				"dayPart": {
+					"type": "string"
+				},
+				"customer": {
+					"type": "object",
+					"properties": {
+						"phone": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	}
+}
