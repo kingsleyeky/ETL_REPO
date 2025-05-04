@@ -1,0 +1,9 @@
+{
+	"name": "api-to-db-df",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "18b31f6a-48d9-4963-838d-3cc11fee3a97",
+		"tenantId": "8a2f362f-00c4-4bee-b6fc-e3b949be7b77"
+	}
+}
