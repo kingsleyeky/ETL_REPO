@@ -14,7 +14,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "Pull Data from API",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
