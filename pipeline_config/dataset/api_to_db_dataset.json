@@ -1,0 +1,25 @@
+{
+	"name": "api_to_db_dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "raw_spoton_data",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "@dataset().fileName",
+				"folderPath": "locations_data",
+				"fileSystem": "raw-spoton-data"
+			}
+		},
+		"schema": {}
+	}
+}
