@@ -12,7 +12,15 @@
 					"name": "JsonFileSource"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "api_to_db_dataset",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "unrollByChecks"
@@ -122,7 +130,50 @@
 				"          customer",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> unrollByGuests"
+				"     skipDuplicateMapOutputs: false) ~> unrollByGuests",
+				"unrollByGuests sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          id,",
+				"          name,",
+				"          deleted,",
+				"          locationId,",
+				"          orderTypeId,",
+				"          orderTypeName,",
+				"          createdByEmployeeId,",
+				"          createdByEmployeeName,",
+				"          businessDate,",
+				"          createdAt,",
+				"          closedAt,",
+				"          orderNumber,",
+				"          tableNumber,",
+				"          scheduled,",
+				"          releasedAt,",
+				"          ownerInfo,",
+				"          totalAmount,",
+				"          balanceDueAmount,",
+				"          gratuityAmount,",
+				"          checksTotalAmount,",
+				"          paymentsAmount,",
+				"          balanceAmount,",
+				"          guestsName,",
+				"          items,",
+				"          surcharges,",
+				"          payments,",
+				"          updatedAt,",
+				"          teamId,",
+				"          dayPart,",
+				"          customer",
+				"     )) ~> sink1"
 			]
 		}
 	}
