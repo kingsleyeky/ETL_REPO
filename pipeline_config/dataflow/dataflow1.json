@@ -13,7 +13,11 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
 			"scriptLines": [
 				"parameters{",
 				"     locationid as string",
@@ -46,7 +50,43 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine') ~> JsonFileSource"
+				"     documentForm: 'documentPerLine') ~> JsonFileSource",
+				"JsonFileSource foldDown(unroll(checks),",
+				"     mapColumn(",
+				"          id,",
+				"          name,",
+				"          deleted,",
+				"          locationId,",
+				"          orderTypeId,",
+				"          orderTypeName,",
+				"          createdByEmployeeId,",
+				"          createdByEmployeeName,",
+				"          businessDate,",
+				"          createdAt,",
+				"          closedAt,",
+				"          orderNumber,",
+				"          tableNumber,",
+				"          scheduled,",
+				"          releasedAt,",
+				"          ownerInfo,",
+				"          totalAmount,",
+				"          balanceDueAmount,",
+				"          gratuityAmount = checks.gratuityAmount,",
+				"          checksTotalAmount = checks.totalAmount,",
+				"          paymentsAmount = checks.paymentsAmount,",
+				"          balanceAmount = checks.balanceAmount,",
+				"          items = checks.items,",
+				"          voidedItems = checks.voidedItems,",
+				"          guests = checks.guests,",
+				"          surcharges = checks.surcharges,",
+				"          payments = checks.payments,",
+				"          updatedAt,",
+				"          teamId,",
+				"          dayPart,",
+				"          customer",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
 			]
 		}
 	}
