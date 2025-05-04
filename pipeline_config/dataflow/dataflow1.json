@@ -156,7 +156,6 @@
 				"          tableNumber,",
 				"          scheduled,",
 				"          releasedAt,",
-				"          ownerInfo,",
 				"          totalAmount,",
 				"          balanceDueAmount,",
 				"          gratuityAmount,",
@@ -169,8 +168,7 @@
 				"          payments,",
 				"          updatedAt,",
 				"          teamId,",
-				"          dayPart,",
-				"          customer",
+				"          dayPart",
 				"     )) ~> sink1"
 			]
 		}
