@@ -48,8 +48,32 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.locationList",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"parameters": {
+			"LocationList": {
+				"type": "array",
+				"defaultValue": [
+					"Location16075",
+					"Location16672",
+					"Location19170",
+					"Location19150",
+					"Location19174"
+				]
+			}
+		},
 		"annotations": []
 	}
 }
