@@ -23,7 +23,7 @@
 			],
 			"transformations": [
 				{
-					"name": "takeOutNestedColumns"
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -56,8 +56,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> source1",
-				"source1 foldDown(unroll(),",
-				"     mapColumn(",
+				"source1 select(mapColumn(",
 				"          id,",
 				"          name,",
 				"          deleted,",
@@ -79,9 +78,9 @@
 				"          teamId,",
 				"          dayPart",
 				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> takeOutNestedColumns",
-				"takeOutNestedColumns sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
