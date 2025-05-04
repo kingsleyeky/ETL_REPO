@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "api_to_db_dataset",
+						"referenceName": "DB_dataset",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -83,11 +83,14 @@
 				"     skipDuplicateMapOutputs: false) ~> takeOutNestedColumns",
 				"takeOutNestedColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          id,",
 				"          name,",
