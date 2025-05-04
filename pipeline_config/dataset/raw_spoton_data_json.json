@@ -1,0 +1,19 @@
+{
+	"name": "raw_spoton_data_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "raw_spoton_data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "location16075.json",
+				"fileSystem": "raw-spoton-data"
+			}
+		},
+		"schema": {}
+	}
+}
