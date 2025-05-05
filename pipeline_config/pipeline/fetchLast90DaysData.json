@@ -160,7 +160,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"location": {
-											"value": "@pipeline().parameters.locationID",
+											"value": "/mass_download/@{pipeline().parameters.locationID}",
 											"type": "Expression"
 										}
 									}
