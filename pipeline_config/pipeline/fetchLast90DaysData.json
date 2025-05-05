@@ -53,68 +53,45 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "fetchData",
-							"type": "Copy",
+							"name": "Set_startTime",
+							"type": "SetVariable",
 							"dependsOn": [],
 							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
 								"secureInput": false
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "RestSource",
-									"httpRequestTimeout": "00:01:40",
-									"requestInterval": "00.00:00:00.010",
-									"requestMethod": "GET",
-									"paginationRules": {
-										"supportRFC5988": "true"
-									}
-								},
-								"sink": {
-									"type": "JsonSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "JsonWriteSettings"
-									}
-								},
-								"enableStaging": false
-							},
-							"inputs": [
+								"variableName": "startTime",
+								"value": {
+									"value": "@item().startTime",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set_endTime",
+							"type": "SetVariable",
+							"dependsOn": [
 								{
-									"referenceName": "SpotonAPI_dataset",
-									"type": "DatasetReference",
-									"parameters": {
-										"locationid": {
-											"value": "@pipeline().parameters.locationID",
-											"type": "Expression"
-										},
-										"endTime": "@item().endTime",
-										"startTime": "@item().startTime"
-									}
+									"activity": "Set_startTime",
+									"dependencyConditions": [
+										"Succeeded"
+									]
 								}
 							],
-							"outputs": [
-								{
-									"referenceName": "90_days_location_dataset",
-									"type": "DatasetReference",
-									"parameters": {
-										"folderPath": {
-											"value": "@pipeline().parameters.locationID\n",
-											"type": "Expression"
-										},
-										"fileName": {
-											"value": "@concat(\n  pipeline().parameters.locationID, '_',\n  replace(item().startTime, ':', ''), '_',\n  replace(item().endTime, ':', ''), '_orders.json'\n)\n",
-											"type": "Expression"
-										}
-									}
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "endTime",
+								"value": {
+									"value": "@item().endTime",
+									"type": "Expression"
 								}
-							]
+							}
 						}
 					]
 				}
@@ -123,6 +100,14 @@
 		"parameters": {
 			"locationID": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"startTime": {
+				"type": "String"
+			},
+			"endTime": {
+				"type": "String"
 			}
 		},
 		"annotations": []
