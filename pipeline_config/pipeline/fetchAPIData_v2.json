@@ -71,11 +71,11 @@
 			},
 			"startDate": {
 				"type": "string",
-				"defaultValue": "2025-02-01T00:00:00Z"
+				"defaultValue": "\"2025-02-01T00:00:00Z\""
 			},
 			"endDate": {
 				"type": "string",
-				"defaultValue": "2025-05-05T00:00:00Z"
+				"defaultValue": "\"2025-05-05T00:00:00Z\""
 			}
 		},
 		"variables": {
