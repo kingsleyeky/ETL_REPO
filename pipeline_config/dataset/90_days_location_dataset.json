@@ -5,12 +5,20 @@
 			"referenceName": "raw_spoton_data",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"location": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "locations_data/90_days_retrieval",
+				"folderPath": {
+					"value": "@dataset().location",
+					"type": "Expression"
+				},
 				"fileSystem": "raw-spoton-data"
 			}
 		},
