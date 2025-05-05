@@ -9,9 +9,6 @@
 			"locationid": {
 				"type": "string"
 			},
-			"startTime": {
-				"type": "string"
-			},
 			"endTime": {
 				"type": "string"
 			}
