@@ -1,0 +1,90 @@
+{
+	"name": "fetchAPIData_v2",
+	"properties": {
+		"activities": [
+			{
+				"name": "LoopForEachLocation",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.LocationList",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "assignLocationID",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "locationID",
+								"value": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "fetchDataFor90Days",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "assignLocationID",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "fetchLast90DaysData",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"locationID": {
+										"value": "@item()",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"locationList": {
+				"type": "string",
+				"defaultValue": [
+					"Location16075"
+				]
+			},
+			"startDate": {
+				"type": "string",
+				"defaultValue": "2025-02-01T00:00:00Z"
+			},
+			"endDate": {
+				"type": "string",
+				"defaultValue": "2025-05-05T00:00:00Z"
+			}
+		},
+		"variables": {
+			"locationID": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
