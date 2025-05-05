@@ -157,7 +157,13 @@
 							"outputs": [
 								{
 									"referenceName": "90_days_location_dataset",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"businessDate": {
+											"value": "@formatDateTime(variables('startTime'), 'yyyy-MM-dd')\n",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
