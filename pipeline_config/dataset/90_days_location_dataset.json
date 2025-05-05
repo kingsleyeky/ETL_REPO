@@ -19,10 +19,7 @@
 					"value": "orders.json",
 					"type": "Expression"
 				},
-				"folderPath": {
-					"value": "@{dataset().locationID}",
-					"type": "Expression"
-				},
+				"folderPath": "locations_data/90_days_retrieval",
 				"fileSystem": "raw-spoton-data"
 			}
 		},
