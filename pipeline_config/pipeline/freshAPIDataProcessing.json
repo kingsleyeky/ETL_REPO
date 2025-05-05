@@ -53,6 +53,54 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "setEndTime",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "setStartTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "endTime",
+					"value": {
+						"value": "@formatDateTime(utcNow(), 'yyyy-MM-ddTHH:mm:ssZ')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "setFileName",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "setEndTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "fileName",
+					"value": {
+						"value": "@concat(\n  pipeline().parameters.locationID, '/',\n  pipeline().parameters.locationID, '-',\n  formatDateTime(variables('startTime'), 'yyyyMMddTHHmmss'), '-',\n  formatDateTime(variables('endTime'), 'yyyyMMddTHHmmss'),\n  '_orders.json'\n)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
