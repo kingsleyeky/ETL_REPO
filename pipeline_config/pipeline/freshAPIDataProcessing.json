@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT TOP 1 LastRunTime \nFROM PipelineExecutionTracker \nWHERE LocationID = '@{pipeline().parameters.locationID}'\nORDER BY LastRunTime DESC;",
+							"value": "SELECT ISNULL(\n  (SELECT TOP 1 LastRunTime \n   FROM PipelineExecutionTracker \n   WHERE LocationID = '@{pipeline().parameters.locationID}'\n   ORDER BY LastRunTime DESC),\n  DATEADD(HOUR, -24, GETUTCDATE())\n) AS LastRunTime",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -49,7 +49,7 @@
 				"typeProperties": {
 					"variableName": "startTime",
 					"value": {
-						"value": "@coalesce(  activity('getLastRunTime').output.firstRow.LastRunTime,\n  formatDateTime(addHours(utcNow(), -24), 'yyyy-MM-ddTHH:mm:ssZ')\n)\n",
+						"value": "@coalesce(  activity('getLastRunTime').output.firstRow?.LastRunTime,\n  formatDateTime(addHours(utcNow(), -24), 'yyyy-MM-ddTHH:mm:ssZ')\n)\n",
 						"type": "Expression"
 					}
 				}
@@ -101,6 +101,79 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "setFileName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "api_dataset",
+						"type": "DatasetReference",
+						"parameters": {
+							"locationid": {
+								"value": "@pipeline().parameters.locationID",
+								"type": "Expression"
+							},
+							"startTime": {
+								"value": "@variables('startTime')",
+								"type": "Expression"
+							},
+							"endTime": {
+								"value": "@variables('endTime')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "freshExtractedData",
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": {
+								"value": "@variables('fileName')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
 			}
 		],
 		"parameters": {
