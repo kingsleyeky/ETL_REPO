@@ -1,0 +1,32 @@
+{
+	"name": "freshAPIDataProcessing",
+	"properties": {
+		"parameters": {
+			"locationID": {
+				"type": "string"
+			},
+			"runFrequencyHours": {
+				"type": "string",
+				"defaultValue": "4"
+			},
+			"overrideStartTime": {
+				"type": "string"
+			},
+			"runID": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"startTime": {
+				"type": "String"
+			},
+			"endTime": {
+				"type": "String"
+			},
+			"fileName": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
