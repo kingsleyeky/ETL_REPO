@@ -159,8 +159,8 @@
 									"referenceName": "90_days_location_dataset",
 									"type": "DatasetReference",
 									"parameters": {
-										"businessDate": {
-											"value": "@formatDateTime(variables('startTime'), 'yyyy-MM-dd')\n",
+										"locationID": {
+											"value": "@pipeline().parameters.locationID",
 											"type": "Expression"
 										}
 									}
