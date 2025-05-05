@@ -1,0 +1,29 @@
+{
+	"name": "freshAPIDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "spotonAPI",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"locationID": {
+				"type": "string"
+			},
+			"startTime": {
+				"type": "string"
+			},
+			"endTime": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat(\n  '/posexport/v1/locations/', dataset().locationID,\n  '/orders?createdAtStart=',\n  replace(replace(dataset().startTime, ':', '%3A'), 'Z', ''),\n  '&createdAtEnd=',\n  replace(replace(dataset().endTime, ':', '%3A'), 'Z', '')\n)",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}
