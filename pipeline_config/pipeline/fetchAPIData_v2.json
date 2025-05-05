@@ -39,8 +39,7 @@
 			"locationList": {
 				"type": "array",
 				"defaultValue": [
-					"Location16075",
-					"Location19150"
+					"Location16075"
 				]
 			},
 			"startDate": {
