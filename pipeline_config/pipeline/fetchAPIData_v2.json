@@ -30,6 +30,35 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "fetchFor90Days",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "assignLocationID",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "fetchLast90DaysData",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"locationID": {
+										"value": "@item()",
+										"type": "Expression"
+									}
+								}
+							}
 						}
 					]
 				}
