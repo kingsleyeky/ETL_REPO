@@ -8,12 +8,21 @@
 		"parameters": {
 			"locationid": {
 				"type": "string"
+			},
+			"startTime": {
+				"type": "string"
+			},
+			"endTime": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
-			"relativeUrl": "@concat('locations/', dataset().locationId, '/orders?createdAtStart=2025-03-01T00%3A27%3A06Z&createdAtEnd=2025-03-01T01%3A59%3A19Z')"
+			"relativeUrl": {
+				"value": "@concat(\n  'posexport/v1/locations/', dataset().locationid,\n  '/orders?createdAtStart=', dataset().startTime,\n  '&createdAtEnd=', dataset().endTime\n)\n",
+				"type": "Expression"
+			}
 		},
 		"schema": []
 	}
