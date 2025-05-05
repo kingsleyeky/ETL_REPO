@@ -1,0 +1,42 @@
+{
+	"name": "fetchAPIData_v3",
+	"properties": {
+		"activities": [
+			{
+				"name": "setCurrentTime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "currentTime",
+					"value": "@utcnow()"
+				}
+			}
+		],
+		"parameters": {
+			"locationList": {
+				"type": "array"
+			},
+			"runFrequencyHours": {
+				"type": "int",
+				"defaultValue": 4
+			},
+			"overrideStartTime": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"currentTime": {
+				"type": "String"
+			},
+			"runID": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
