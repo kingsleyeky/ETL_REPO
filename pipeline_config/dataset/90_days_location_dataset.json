@@ -6,9 +6,6 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"locationID": {
-				"type": "string"
-			},
 			"businessDate": {
 				"type": "string"
 			}
@@ -19,13 +16,10 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@concat(dataset().locationID, '_', dataset().businessDate, '_orders.json')",
+					"value": "@concat(dataset().businessDate, '_orders.json')",
 					"type": "Expression"
 				},
-				"folderPath": {
-					"value": "@{dataset().locationID}",
-					"type": "Expression"
-				},
+				"folderPath": "locations_data",
 				"fileSystem": "raw-spoton-data"
 			}
 		},
