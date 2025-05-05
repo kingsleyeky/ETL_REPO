@@ -11,6 +11,9 @@
 			},
 			"endTime": {
 				"type": "string"
+			},
+			"startTime": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
