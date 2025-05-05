@@ -20,7 +20,7 @@
 		"type": "RestResource",
 		"typeProperties": {
 			"relativeUrl": {
-				"value": "@concat(\n  '/posexport/v1/locations/', dataset().locationID,\n  '/orders?createdAtStart=',\n  replace(replace(dataset().startTime, ':', '%3A'), 'Z', ''),\n  '&createdAtEnd=',\n  replace(replace(dataset().endTime, ':', '%3A'), 'Z', '')\n)",
+				"value": "@concat('locations/', dataset().locationID,\n  '/orders?createdAtStart=',\n  replace(replace(dataset().startTime, ':', '%3A'), 'Z', ''),\n  '&createdAtEnd=',\n  replace(replace(dataset().endTime, ':', '%3A'), 'Z', '')\n)",
 				"type": "Expression"
 			}
 		},
