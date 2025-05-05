@@ -1,0 +1,26 @@
+{
+	"name": "freshExtractedData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "raw_spoton_data",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	}
+}
