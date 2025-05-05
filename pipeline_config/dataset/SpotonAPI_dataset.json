@@ -5,16 +5,11 @@
 			"referenceName": "spotonAPI",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"locationid": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
 			"relativeUrl": {
-				"value": "@concat(\n  'posexport/v1/locations/', dataset().locationid,\n  '/orders?createdAtStart=2025-03-01T00%3A00%3A00Z',\n  '&createdAtEnd=2025-03-01T23%3A59%3A59Z'\n)\n",
+				"value": "posexport/v1/locations/Location16075/orders?createdAtStart=2025-02-05T00%3A27%3A06Z&createdAtEnd=2025-02-05T01%3A59%3A19Z' \\\n     --header 'accept: application/json' \\\n     --header 'x-api-key: ae26019c-3cf9-4700-bcd1-c57975060532'",
 				"type": "Expression"
 			}
 		},
