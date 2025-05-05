@@ -1,0 +1,35 @@
+{
+	"name": "pipelineTracker",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "db_link",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "LocationID",
+				"type": "varchar"
+			},
+			{
+				"name": "LastRunTime",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "LastSuccessfulRunTime",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "PipelineRunID",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "PipelineExecutionTracker"
+		}
+	}
+}

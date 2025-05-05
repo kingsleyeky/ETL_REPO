@@ -1,6 +1,60 @@
 {
 	"name": "freshAPIDataProcessing",
 	"properties": {
+		"activities": [
+			{
+				"name": "getLastRunTime",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT TOP 1 LastRunTime \nFROM PipelineExecutionTracker \nWHERE LocationID = '@{pipeline().parameters.locationID}'\nORDER BY LastRunTime DESC;",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "pipelineTracker",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "setStartTime",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "getLastRunTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "startTime",
+					"value": {
+						"value": "@coalesce(  activity('getLastRunTime').output.firstRow.LastRunTime,\n  formatDateTime(addHours(utcNow(), -24), 'yyyy-MM-ddTHH:mm:ssZ')\n)\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
 		"parameters": {
 			"locationID": {
 				"type": "string"
