@@ -125,7 +125,8 @@
 								"sink": {
 									"type": "JsonSink",
 									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
+										"type": "AzureBlobFSWriteSettings",
+										"copyBehavior": "FlattenHierarchy"
 									},
 									"formatSettings": {
 										"type": "JsonWriteSettings"
@@ -135,7 +136,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SpotonAPI_dataset",
+									"referenceName": "api_dataset",
 									"type": "DatasetReference",
 									"parameters": {
 										"locationid": {
@@ -148,17 +149,7 @@
 							"outputs": [
 								{
 									"referenceName": "90_days_location_dataset",
-									"type": "DatasetReference",
-									"parameters": {
-										"folderPath": {
-											"value": "@pipeline().parameters.locationID\n",
-											"type": "Expression"
-										},
-										"fileName": {
-											"value": "@concat(\n  pipeline().parameters.locationID, '_',\n  replace(item().startTime, ':', ''), '_',\n  replace(item().endTime, ':', ''), '_orders.json'\n)\n",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							]
 						}
@@ -168,7 +159,8 @@
 		],
 		"parameters": {
 			"locationID": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Location16075"
 			}
 		},
 		"variables": {
