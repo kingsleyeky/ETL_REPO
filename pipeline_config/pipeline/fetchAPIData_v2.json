@@ -67,9 +67,7 @@
 		"parameters": {
 			"locationList": {
 				"type": "array",
-				"defaultValue": [
-					"Location16075"
-				]
+				"defaultValue": "[\"Location16075\",\"Location19150\"] ]"
 			},
 			"startDate": {
 				"type": "string",
