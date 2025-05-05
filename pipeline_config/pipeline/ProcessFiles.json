@@ -232,7 +232,7 @@
 										}
 									},
 									{
-										"name": "Copy data1",
+										"name": "moveDataToProcessed",
 										"type": "Copy",
 										"dependsOn": [
 											{
@@ -294,6 +294,44 @@
 												}
 											}
 										]
+									},
+									{
+										"name": "deleteFileFromFetchedLocation_copy1",
+										"type": "Delete",
+										"dependsOn": [
+											{
+												"activity": "moveDataToProcessed",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"dataset": {
+												"referenceName": "metadataSize",
+												"type": "DatasetReference",
+												"parameters": {
+													"fileName": {
+														"value": "@item().name",
+														"type": "Expression"
+													}
+												}
+											},
+											"enableLogging": false,
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										}
 									}
 								]
 							}
