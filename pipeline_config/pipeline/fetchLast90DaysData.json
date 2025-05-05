@@ -157,13 +157,7 @@
 							"outputs": [
 								{
 									"referenceName": "90_days_location_dataset",
-									"type": "DatasetReference",
-									"parameters": {
-										"locationID": {
-											"value": "@pipeline().parameters.locationID",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							]
 						}
