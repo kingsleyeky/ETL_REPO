@@ -5,6 +5,11 @@
 			"referenceName": "spotonAPI",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"locationid": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
