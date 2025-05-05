@@ -34,6 +34,8 @@
 						{
 							"name": "fetchDataFor90Days",
 							"type": "ExecutePipeline",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "assignLocationID",
@@ -67,7 +69,10 @@
 		"parameters": {
 			"locationList": {
 				"type": "array",
-				"defaultValue": "[\"Location16075\",\"Location19150\"] ]"
+				"defaultValue": [
+					"Location16075",
+					"Location19150"
+				]
 			},
 			"startDate": {
 				"type": "string",
