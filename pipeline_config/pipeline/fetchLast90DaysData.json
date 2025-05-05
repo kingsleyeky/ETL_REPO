@@ -141,14 +141,6 @@
 										"locationid": {
 											"value": "@pipeline().parameters.locationID",
 											"type": "Expression"
-										},
-										"endTime": {
-											"value": "@variables('endTime')",
-											"type": "Expression"
-										},
-										"startTime": {
-											"value": "@variables('startTime')",
-											"type": "Expression"
 										}
 									}
 								}
