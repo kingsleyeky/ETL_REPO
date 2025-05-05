@@ -48,18 +48,6 @@
 								},
 								"enableStaging": false
 							},
-							"inputs": [
-								{
-									"referenceName": "SpotonAPI_dataset",
-									"type": "DatasetReference",
-									"parameters": {
-										"locationid": {
-											"value": "@item()",
-											"type": "Expression"
-										}
-									}
-								}
-							],
 							"outputs": [
 								{
 									"referenceName": "raw_spoton_data_json",
