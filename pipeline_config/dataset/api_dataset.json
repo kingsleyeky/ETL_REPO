@@ -14,9 +14,6 @@
 			},
 			"endTime": {
 				"type": "string"
-			},
-			"io": {
-				"type": "string"
 			}
 		},
 		"annotations": [],
