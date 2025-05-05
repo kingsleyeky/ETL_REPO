@@ -12,6 +12,7 @@
 						"value": "@pipeline().parameters.locationList",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "Pull Data from API",
@@ -106,6 +107,14 @@
 					"Location19150",
 					"Location19174"
 				]
+			},
+			"startDate": {
+				"type": "string",
+				"defaultValue": "2025-02-05T00:00:00Z"
+			},
+			"endDate": {
+				"type": "string",
+				"defaultValue": "2025-05-05T23:59:59Z"
 			}
 		},
 		"annotations": []
