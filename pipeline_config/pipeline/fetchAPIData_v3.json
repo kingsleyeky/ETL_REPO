@@ -36,11 +36,48 @@
 					"variableName": "runID",
 					"value": "@guid()"
 				}
+			},
+			{
+				"name": "processLocations",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "setRunID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.LocationIDs",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"waitOnCompletion": true
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
 			"locationList": {
-				"type": "array"
+				"type": "array",
+				"defaultValue": [
+					"Location16075"
+				]
 			},
 			"runFrequencyHours": {
 				"type": "int",
