@@ -19,7 +19,7 @@
 					"value": "@dataset().fileName",
 					"type": "Expression"
 				},
-				"folderPath": "locations_data",
+				"folderPath": "locations_data/90_days_retrieval",
 				"fileSystem": "raw-spoton-data"
 			}
 		},
