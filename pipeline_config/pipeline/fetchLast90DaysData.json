@@ -157,10 +157,7 @@
 							"outputs": [
 								{
 									"referenceName": "90_days_location_dataset",
-									"type": "DatasetReference",
-									"parameters": {
-										"location": "1234"
-									}
+									"type": "DatasetReference"
 								}
 							]
 						}
