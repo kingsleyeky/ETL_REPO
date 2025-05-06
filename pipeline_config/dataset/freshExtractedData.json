@@ -22,11 +22,10 @@
 					"value": "@dataset().fileName",
 					"type": "Expression"
 				},
-				"folderPath": {
-					"value": "@concat('locations_data/',dataset().filePath)",
+				"fileSystem": {
+					"value": "@dataset().filePath",
 					"type": "Expression"
-				},
-				"fileSystem": "raw-spoton-data"
+				}
 			}
 		},
 		"schema": {}
