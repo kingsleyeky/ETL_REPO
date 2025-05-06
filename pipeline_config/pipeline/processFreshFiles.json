@@ -208,14 +208,11 @@
 										"userProperties": [],
 										"typeProperties": {
 											"dataflow": {
-												"referenceName": "transformFreshDataIntoDB",
+												"referenceName": "dataflow1",
 												"type": "DataFlowReference",
 												"datasetParameters": {
 													"source1": {
-														"fileName": {
-															"value": "@item().name",
-															"type": "Expression"
-														}
+														"fileName": "@item().name"
 													}
 												}
 											},
