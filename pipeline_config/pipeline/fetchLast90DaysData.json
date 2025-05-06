@@ -160,11 +160,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"fileName": {
-											"value": "@variables('fileName')",
+											"value": "@concat(pipeline().parameters.locationID,\n    '_',\n    formatDateTime(variables('startTime'), 'yyyy-MM-dd'),\n    '_orders.json')",
 											"type": "Expression"
 										},
 										"location_folder": {
-											"value": "@pipeline().parameters.locationID",
+											"value": "@variables('fileName')",
 											"type": "Expression"
 										}
 									}
@@ -190,7 +190,7 @@
 							"typeProperties": {
 								"variableName": "fileName",
 								"value": {
-									"value": "@concat(\n    pipeline().parameters.locationID,\n    '_',\n    formatDateTime(variables('startTime'), 'yyyy-MM-dd'),\n    '_orders.json'\n)",
+									"value": "@concat(\n    'raw-spoton-data/locations_data/90_days_retrieval/',\n    pipeline().parameters.locationID\n)",
 									"type": "Expression"
 								}
 							}
