@@ -156,13 +156,7 @@
 							"outputs": [
 								{
 									"referenceName": "90DaysDump",
-									"type": "DatasetReference",
-									"parameters": {
-										"fileName": {
-											"value": "@concat(pipeline().parameters.locationID,\n    '_',\n    formatDateTime(variables('startTime'), 'yyyy-MM-dd'),\n    '_orders.json')",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							]
 						},
