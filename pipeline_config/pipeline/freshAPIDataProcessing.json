@@ -49,7 +49,7 @@
 				"typeProperties": {
 					"variableName": "startTime",
 					"value": {
-						"value": "@coalesce(  activity('getLastRunTime').output.firstRow?.LastRunTime,\n  formatDateTime(addHours(utcNow(), -24), 'yyyy-MM-ddTHH:mm:ssZ')\n)\n",
+						"value": "@coalesce(  activity('getLastRunTime').output.firstRow?.LastRunTime,\n  formatDateTime(addHours(utcNow(), -24), 'yyyy-MM-ddTHH:mm:ssZ')\n)",
 						"type": "Expression"
 					}
 				}
@@ -73,7 +73,7 @@
 				"typeProperties": {
 					"variableName": "endTime",
 					"value": {
-						"value": "@formatDateTime(utcNow(), 'yyyy-MM-ddTHH:mm:ssZ')",
+						"value": "@formatDateTime(addMinutes(utcNow(), -5), 'yyyy-MM-ddTHH:mm:ssZ')",
 						"type": "Expression"
 					}
 				}
@@ -97,7 +97,7 @@
 				"typeProperties": {
 					"variableName": "fileName",
 					"value": {
-						"value": "@concat(\n  pipeline().parameters.locationID, '/',\n  pipeline().parameters.locationID, '-',\n  formatDateTime(variables('startTime'), 'yyyyMMddTHHmmss'), '-',\n  formatDateTime(variables('endTime'), 'yyyyMMddTHHmmss'),\n  '_orders.json'\n)",
+						"value": "@concat(\n    'raw-spoton-data/locations_data/',\n    formatDateTime(variables('startTime'), 'yyyyMMddTHHmmss'),\n    '_',\n    formatDateTime(variables('endTime'), 'yyyyMMddTHHmmss'),\n    '/',\n    pipeline().parameters.locationID,\n    '_orders.json'\n)",
 						"type": "Expression"
 					}
 				}
@@ -144,19 +144,11 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "api_dataset",
+						"referenceName": "freshAPIDataset",
 						"type": "DatasetReference",
 						"parameters": {
-							"locationid": {
-								"value": "@pipeline().parameters.locationID",
-								"type": "Expression"
-							},
-							"startTime": {
-								"value": "@variables('startTime')",
-								"type": "Expression"
-							},
-							"endTime": {
-								"value": "@variables('endTime')",
+							"url": {
+								"value": "@concat(\n  '/posexport/v1/locations/',\n  pipeline().parameters.locationID,\n  '/orders?createdAtStart=',\n  replace(formatDateTime(variables('startTime'), 'yyyy-MM-ddTHH:mm:ss'), ':', '%3A'),\n  'Z&createdAtEnd=',\n  replace(formatDateTime(variables('endTime'), 'yyyy-MM-ddTHH:mm:ss'), ':', '%3A'),\n  'Z'\n)",
 								"type": "Expression"
 							}
 						}
@@ -169,6 +161,10 @@
 						"parameters": {
 							"fileName": {
 								"value": "@variables('fileName')",
+								"type": "Expression"
+							},
+							"filePath": {
+								"value": "@concat(pipeline().parameters.locationID,'_orders.json')",
 								"type": "Expression"
 							}
 						}
