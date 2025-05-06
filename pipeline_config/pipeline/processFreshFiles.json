@@ -210,7 +210,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"dataflow": {
-												"referenceName": "dataflow1",
+												"referenceName": "transformFreshDataIntoDB",
 												"type": "DataFlowReference",
 												"datasetParameters": {
 													"freshOrdersData": {
