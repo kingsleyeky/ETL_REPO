@@ -13,7 +13,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "currentTime",
-					"value": "@utcnow()"
+					"value": {
+						"value": "@utcnow()",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -34,7 +37,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "runID",
-					"value": "@guid()"
+					"value": {
+						"value": "@guid()",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -83,6 +89,29 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "transformIntoDB",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "processLocations",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "processFreshFiles",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
 				}
 			}
 		],
