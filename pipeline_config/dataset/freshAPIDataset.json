@@ -6,13 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"locationID": {
-				"type": "string"
-			},
-			"startTime": {
-				"type": "string"
-			},
-			"endTime": {
+			"url": {
 				"type": "string"
 			}
 		},
@@ -20,7 +14,7 @@
 		"type": "RestResource",
 		"typeProperties": {
 			"relativeUrl": {
-				"value": "@concat('locations/', dataset().locationID,\n  '/orders?createdAtStart=',\n  replace(replace(dataset().startTime, ':', '%3A'), 'Z', ''),\n  '&createdAtEnd=',\n  replace(replace(dataset().endTime, ':', '%3A'), 'Z', '')\n)",
+				"value": "@dataset().url",
 				"type": "Expression"
 			}
 		},
