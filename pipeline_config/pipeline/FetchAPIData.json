@@ -5,6 +5,8 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
@@ -48,6 +50,12 @@
 								},
 								"enableStaging": false
 							},
+							"inputs": [
+								{
+									"referenceName": "api_dataset",
+									"type": "DatasetReference"
+								}
+							],
 							"outputs": [
 								{
 									"referenceName": "raw_spoton_data_json",
@@ -64,6 +72,8 @@
 			{
 				"name": "Processfiles",
 				"type": "ExecutePipeline",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ForEach1",
@@ -89,20 +99,29 @@
 			"LocationList": {
 				"type": "array",
 				"defaultValue": [
-					"Location16075",
-					"Location16672",
-					"Location19170",
-					"Location19150",
-					"Location19174"
+					"Location16075"
 				]
 			},
-			"startDate": {
-				"type": "string",
-				"defaultValue": "2025-02-05T00:00:00Z"
+			"runFrequencyHours": {
+				"type": "int",
+				"defaultValue": 4
 			},
-			"endDate": {
-				"type": "string",
-				"defaultValue": "2025-05-05T23:59:59Z"
+			"overrideStartTime": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"startTime": {
+				"type": "String"
+			},
+			"endTime": {
+				"type": "String"
+			},
+			"currentTime": {
+				"type": "String"
+			},
+			"fileName": {
+				"type": "String"
 			}
 		},
 		"annotations": []
