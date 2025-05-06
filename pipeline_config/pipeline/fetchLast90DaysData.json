@@ -98,7 +98,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Set_endTime",
+									"activity": "Set_fileName",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -157,9 +157,43 @@
 							"outputs": [
 								{
 									"referenceName": "90_days_location_dataset",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"fileName": {
+											"value": "@variables('fileName')",
+											"type": "Expression"
+										},
+										"location_folder": {
+											"value": "@pipeline().parameters.locationID",
+											"type": "Expression"
+										}
+									}
 								}
 							]
+						},
+						{
+							"name": "Set_fileName",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set_endTime",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "fileName",
+								"value": {
+									"value": "@concat(\n    pipeline().parameters.locationID,\n    '_',\n    formatDateTime(variables('startTime'), 'yyyy-MM-dd'),\n    '_orders.json'\n)",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -176,6 +210,9 @@
 				"type": "String"
 			},
 			"endTime": {
+				"type": "String"
+			},
+			"fileName": {
 				"type": "String"
 			}
 		},
