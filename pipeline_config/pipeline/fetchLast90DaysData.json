@@ -96,6 +96,8 @@
 						{
 							"name": "fetchData",
 							"type": "Copy",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Set_fileName",
