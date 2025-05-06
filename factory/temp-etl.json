@@ -1,0 +1,9 @@
+{
+	"name": "temp-etl",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "bab7b980-c071-44bc-8973-dcc0e08b250b",
+		"tenantId": "fcbc0dfa-96ea-4c15-ad2f-f4a52113927f"
+	}
+}
