@@ -3,13 +3,26 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Stopped",
-		"pipelines": [],
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "fetchAPIData_v3",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"locationList": [
+						"Location16075",
+						"Location19150"
+					]
+				}
+			}
+		],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
 				"frequency": "Hour",
 				"interval": 4,
-				"startTime": "2025-05-06T10:44:00",
+				"startTime": "2025-05-20T10:44:00",
 				"timeZone": "W. Central Africa Standard Time"
 			}
 		}
