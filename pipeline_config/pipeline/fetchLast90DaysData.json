@@ -96,8 +96,6 @@
 						{
 							"name": "fetchData",
 							"type": "Copy",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Set_fileName",
@@ -160,8 +158,8 @@
 									"referenceName": "90DaysDump",
 									"type": "DatasetReference",
 									"parameters": {
-										"filePath": {
-											"value": "@pipeline().parameters.locationID",
+										"fileName": {
+											"value": "@concat(pipeline().parameters.locationID,\n    '_',\n    formatDateTime(variables('startTime'), 'yyyy-MM-dd'),\n    '_orders.json')",
 											"type": "Expression"
 										}
 									}
