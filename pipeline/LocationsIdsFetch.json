@@ -1,0 +1,142 @@
+{
+	"name": "LocationsIdsFetch",
+	"properties": {
+		"description": "This endpoint return locations.",
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"additionalHeaders": {
+							"x-api-key": "ae26019c-3cf9-4700-bcd1-c57975060532"
+						},
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['organizationId']"
+								},
+								"sink": {
+									"name": "organizationId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name']"
+								},
+								"sink": {
+									"name": "name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['deleted']"
+								},
+								"sink": {
+									"name": "deleted"
+								}
+							},
+							{
+								"source": {
+									"path": "$['fiscalendofdaytime']"
+								},
+								"sink": {
+									"name": "fiscalendofdaytime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['processingendofdaytime']"
+								},
+								"sink": {
+									"name": "processingendofdaytime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['spotonmerchantid']"
+								},
+								"sink": {
+									"name": "spotonmerchantid"
+								}
+							},
+							{
+								"source": {
+									"path": "$['spotonmerchantgroupidloyalty']"
+								},
+								"sink": {
+									"name": "spotonmerchantgroupidloyalty"
+								}
+							},
+							{
+								"source": {
+									"path": "$['timezone']"
+								},
+								"sink": {
+									"name": "timezone"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "LocationApi",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "LocationlDsTable",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"variables": {
+			"Vtouseurl": {
+				"type": "String",
+				"defaultValue": "https://restaurantapi.spoton.com/posexport/v1/locations/Location19162/menu-items"
+			}
+		},
+		"folder": {
+			"name": "SpotOnApi/Locations"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-04-28T13:32:11Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

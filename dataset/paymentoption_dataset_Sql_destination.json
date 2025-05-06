@@ -1,0 +1,20 @@
+{
+	"name": "paymentoption_dataset_Sql_destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "paymentoption_linkedservice_sql_destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/paymentoption"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "paymentoption"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,20 @@
+{
+	"name": "Categories_dataset_Sql_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Generic_Database_LinkedService_Destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/Categories"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "categories"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

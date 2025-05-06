@@ -1,0 +1,37 @@
+{
+	"name": "Order_RestApi_Dataset_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Order_RestApi_Linked_Resource",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string",
+				"defaultValue": "@item().weburl"
+			},
+			"createdAtStart": {
+				"type": "string"
+			},
+			"createdAtEnd": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/Order"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat(     '?createdAtStart=',formatDateTime(dataset().createdAtStart, 'yyyy-MM-ddTHH:mm:ssZ'),     '&createdAtEnd=',     formatDateTime(addMinutes(dataset().createdAtEnd, -5), 'yyyy-MM-ddTHH:mm:ssZ') )",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

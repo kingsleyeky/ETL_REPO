@@ -1,0 +1,24 @@
+{
+	"name": "Generic_without_Daterangeparameter_DataSet_RestApi_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Generic_withoutDateRangeParameter_RestApi_LinkedService_Source",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/Generic"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

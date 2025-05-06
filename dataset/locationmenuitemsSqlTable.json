@@ -1,0 +1,71 @@
+{
+	"name": "locationmenuitemsSqlTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SpotSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/menuitems"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "varchar"
+			},
+			{
+				"name": "locationId",
+				"type": "varchar"
+			},
+			{
+				"name": "deleted",
+				"type": "bit"
+			},
+			{
+				"name": "available",
+				"type": "bit"
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "openItem",
+				"type": "bit"
+			},
+			{
+				"name": "reportCategoryId",
+				"type": "varchar"
+			},
+			{
+				"name": "standardPriceAmount",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "plu",
+				"type": "varchar"
+			},
+			{
+				"name": "additionalReference",
+				"type": "varchar"
+			},
+			{
+				"name": "additionalBarcode",
+				"type": "varchar"
+			},
+			{
+				"name": "additionalPlu",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "locationmenuitems"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,22 @@
+{
+	"name": "surcharges_RestApi_dataset_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "surcharges_RestApi_Linked_Source",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string",
+				"defaultValue": "@item().weburl"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/subcharges"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

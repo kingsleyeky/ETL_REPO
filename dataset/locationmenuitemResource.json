@@ -1,0 +1,25 @@
+{
+	"name": "locationmenuitemResource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LocationmenuitemService",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string",
+				"defaultValue": "@item().weburl"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/locationmenuitems-new"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

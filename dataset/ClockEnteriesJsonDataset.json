@@ -1,0 +1,23 @@
+{
+	"name": "ClockEnteriesJsonDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkserviceDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "JsonDataSets"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "ClockEnteries",
+				"fileSystem": "spoton-temp-data"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

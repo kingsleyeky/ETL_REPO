@@ -1,0 +1,37 @@
+{
+	"name": "locationjobpositionSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Generic_Database_LinkedService_Destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/jobposition"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "varchar"
+			},
+			{
+				"name": "locationId",
+				"type": "varchar"
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "deleted",
+				"type": "bit"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "jobpositions"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,25 @@
+{
+	"name": "locationorderResource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LocationorderService",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string",
+				"defaultValue": "@item().weburl"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/order"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

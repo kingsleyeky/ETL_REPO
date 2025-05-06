@@ -1,0 +1,41 @@
+{
+	"name": "discountSqlTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Generic_Database_LinkedService_Destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/discount"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "varchar"
+			},
+			{
+				"name": "locationId",
+				"type": "varchar"
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "deleted",
+				"type": "bit"
+			},
+			{
+				"name": "enabled",
+				"type": "bit"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Discount"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

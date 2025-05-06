@@ -1,0 +1,296 @@
+{
+	"name": "LaborReportpipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT concat('https://restaurantapi.spoton.com/posexport/v1/locations/',id,'/reports/labor?') as weburl\n      \n  FROM [dbo].[location]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "LocationlDsTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"additionalHeaders": {
+										"x-api-key": "ae26019c-3cf9-4700-bcd1-c57975060532"
+									},
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "$['locationId']"
+											},
+											"sink": {
+												"name": "locationId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['businessDateKey']"
+											},
+											"sink": {
+												"name": "businessDateKey",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['employeeId']"
+											},
+											"sink": {
+												"name": "employeeId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['employeeFullName']"
+											},
+											"sink": {
+												"name": "employeeFullName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['jobPositionId']"
+											},
+											"sink": {
+												"name": "jobPositionId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['jobPositionName']"
+											},
+											"sink": {
+												"name": "jobPositionName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['timeClockEntryId']"
+											},
+											"sink": {
+												"name": "timeClockEntryId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['inAt']"
+											},
+											"sink": {
+												"name": "inAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['outAt']"
+											},
+											"sink": {
+												"name": "outAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['regularSecondsWorked']"
+											},
+											"sink": {
+												"name": "regularSecondsWorked",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"path": "$['regularPayRateAmount']"
+											},
+											"sink": {
+												"name": "regularPayRateAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['regularPayAmount']"
+											},
+											"sink": {
+												"name": "regularPayAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['overtimeSecondsWorked']"
+											},
+											"sink": {
+												"name": "overtimeSecondsWorked",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"path": "$['overtimePayRateAmount']"
+											},
+											"sink": {
+												"name": "overtimePayRateAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['overtimePayAmount']"
+											},
+											"sink": {
+												"name": "overtimePayAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['totalPayAmount']"
+											},
+											"sink": {
+												"name": "totalPayAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['declaredCashTipsAmount']"
+											},
+											"sink": {
+												"name": "declaredCashTipsAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['declaredCashTipsToOthersAmount']"
+											},
+											"sink": {
+												"name": "declaredCashTipsToOthersAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['unpaidBreakSeconds']"
+											},
+											"sink": {
+												"name": "unpaidBreakSeconds",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"path": "$['lastUpdatedAt']"
+											},
+											"sink": {
+												"name": "lastUpdatedAt",
+												"type": "String"
+											}
+										}
+									]
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "LaborReport_RestApi_DataSet_Source",
+									"type": "DatasetReference",
+									"parameters": {
+										"startDateKey": "20100320",
+										"endDateKey": "20260322",
+										"connurl": "@item().weburl"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "laborReports_Sql_Dataset_Destination",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "SpotOnApi/LaborReports"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-03-31T21:04:46Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

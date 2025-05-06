@@ -1,0 +1,25 @@
+{
+	"name": "Tax_Dataset_Rest_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TaxLinkedRestApiSource",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string",
+				"defaultValue": "@item().weburl"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/Taxes"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

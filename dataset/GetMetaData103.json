@@ -1,0 +1,27 @@
+{
+	"name": "GetMetaData103",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "blobstorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/shogo_pos"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "Shogo Compiled 09.05.2024-04.06.2025",
+				"container": "shogo"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

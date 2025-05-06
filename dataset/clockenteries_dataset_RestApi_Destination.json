@@ -1,0 +1,73 @@
+{
+	"name": "clockenteries_dataset_RestApi_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TimeClockEntries_RestApi_Linked_Destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/ClockEnteries"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "locationId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "deleted",
+				"type": "nvarchar"
+			},
+			{
+				"name": "voided",
+				"type": "nvarchar"
+			},
+			{
+				"name": "employeeId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "jobPositionId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "payRateAmount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "declaredCashTipsAmount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "declaredCashTipsToOthersAmount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "inAt",
+				"type": "nvarchar"
+			},
+			{
+				"name": "outAt",
+				"type": "nvarchar"
+			},
+			{
+				"name": "items",
+				"type": "nvarchar"
+			},
+			{
+				"name": "lastUpdatedAt",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Timeclockentries"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

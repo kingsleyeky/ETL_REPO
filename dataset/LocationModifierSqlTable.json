@@ -1,0 +1,59 @@
+{
+	"name": "LocationModifierSqlTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SpotSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/modifieroptions"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "varchar"
+			},
+			{
+				"name": "organizationId",
+				"type": "varchar"
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "deleted",
+				"type": "bit"
+			},
+			{
+				"name": "fiscalendofdaytime",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "processingendofdaytime",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "spotonmerchantid",
+				"type": "varchar"
+			},
+			{
+				"name": "spotonmerchantgroupidloyalty",
+				"type": "varchar"
+			},
+			{
+				"name": "timezone",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "locationmodifieroptions"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

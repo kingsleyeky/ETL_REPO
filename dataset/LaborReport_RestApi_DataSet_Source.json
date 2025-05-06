@@ -1,0 +1,39 @@
+{
+	"name": "LaborReport_RestApi_DataSet_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LaborReport_RestApi_LinkedService_Source",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"startDateKey": {
+				"type": "string",
+				"defaultValue": "20100320"
+			},
+			"endDateKey": {
+				"type": "string",
+				"defaultValue": "20260322"
+			},
+			"connurl": {
+				"type": "string",
+				"defaultValue": "@item().weburl"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/laborReports"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat('?startDateKey=', formatDateTime(addDays(utcnow(), -1825), 'yyyyMMdd'), \n        '&endDateKey=', formatDateTime(utcnow(), 'yyyyMMdd'))\n",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

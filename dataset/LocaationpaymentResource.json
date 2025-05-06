@@ -1,0 +1,16 @@
+{
+	"name": "LocaationpaymentResource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LocationPaymentRestService",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/locationpaymentoption"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

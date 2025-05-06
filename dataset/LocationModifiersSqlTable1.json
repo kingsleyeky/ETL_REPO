@@ -1,0 +1,41 @@
+{
+	"name": "LocationModifiersSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SpotSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/Modifiers"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "varchar"
+			},
+			{
+				"name": "locationId",
+				"type": "varchar"
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "reportCategoryId",
+				"type": "varchar"
+			},
+			{
+				"name": "deleted",
+				"type": "bit"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Locationmodifiers"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

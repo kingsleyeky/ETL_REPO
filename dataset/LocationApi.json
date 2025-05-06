@@ -1,0 +1,16 @@
+{
+	"name": "LocationApi",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LocationRestService",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/Location"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

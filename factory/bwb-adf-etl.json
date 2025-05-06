@@ -1,0 +1,9 @@
+{
+	"name": "bwb-adf-etl",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "74c3f730-93d8-4ca4-a848-975e8c25532c",
+		"tenantId": "fcbc0dfa-96ea-4c15-ad2f-f4a52113927f"
+	}
+}

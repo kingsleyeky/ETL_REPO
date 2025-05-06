@@ -1,0 +1,20 @@
+{
+	"name": "surcharges_sql_dataset_destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "subcharges_sql_Linked_destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/subcharges"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "surcharges"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

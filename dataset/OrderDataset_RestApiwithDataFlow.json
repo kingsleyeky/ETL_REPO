@@ -1,0 +1,16 @@
+{
+	"name": "OrderDataset_RestApiwithDataFlow",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "OrderLinkedServiceApiSourceDataFlow",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,20 @@
+{
+	"name": "ModifierOptionJson_Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkserviceDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "modifierOption",
+				"fileSystem": "spoton-temp-data"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

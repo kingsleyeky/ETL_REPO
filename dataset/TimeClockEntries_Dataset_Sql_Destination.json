@@ -1,0 +1,20 @@
+{
+	"name": "TimeClockEntries_Dataset_Sql_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TimeClockEntries_RestApi_Linked_Destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/TimeClockEntries"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Timeclockentries"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

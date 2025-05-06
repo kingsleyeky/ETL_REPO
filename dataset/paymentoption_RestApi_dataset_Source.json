@@ -1,0 +1,25 @@
+{
+	"name": "paymentoption_RestApi_dataset_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PaymentOption_RestApi_Source_Link",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string",
+				"defaultValue": "@item().weburl"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/paymentoption"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

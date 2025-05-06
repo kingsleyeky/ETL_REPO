@@ -1,0 +1,117 @@
+{
+	"name": "locationpaymentoptions",
+	"properties": {
+		"activities": [
+			{
+				"name": "locationpaymentoptionsCopyData",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"additionalHeaders": {
+							"x-api-key": "ae26019c-3cf9-4700-bcd1-c57975060532"
+						},
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['locationId']"
+								},
+								"sink": {
+									"name": "locationId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name']"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['deleted']"
+								},
+								"sink": {
+									"name": "deleted",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['enabled']"
+								},
+								"sink": {
+									"name": "enabled",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['kind']"
+								},
+								"sink": {
+									"name": "kind",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "LocaationpaymentResource",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "locationpaymentoptionsAzureSqlTable",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "SpotOnApi/payment_options"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-03-17T17:55:04Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

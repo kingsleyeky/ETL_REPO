@@ -1,0 +1,23 @@
+{
+	"name": "Json_discount_Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkserviceDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "JsonDataSets"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "discounts",
+				"fileSystem": "spoton-temp-data"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

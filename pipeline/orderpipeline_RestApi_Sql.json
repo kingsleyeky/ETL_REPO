@@ -1,0 +1,790 @@
+{
+	"name": "orderpipeline_RestApi_Sql",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT concat('https://restaurantapi.spoton.com/posexport/v1/locations/',id,'/orders?') as weburl\n      \n  FROM [dbo].[location]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "LocationlDsTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"additionalHeaders": {
+										"x-api-key": "ae26019c-3cf9-4700-bcd1-c57975060532"
+									},
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "['gratuityAmount']"
+											},
+											"sink": {
+												"name": "gratuityAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['totalAmount']"
+											},
+											"sink": {
+												"name": "checks_totalAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['paymentsAmount']"
+											},
+											"sink": {
+												"name": "checks_paymentsAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['balanceAmount']"
+											},
+											"sink": {
+												"name": "checks_balanceAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['id']"
+											},
+											"sink": {
+												"name": "id",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['name']"
+											},
+											"sink": {
+												"name": "name",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['deleted']"
+											},
+											"sink": {
+												"name": "deleted",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['locationId']"
+											},
+											"sink": {
+												"name": "locationId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['orderTypeId']"
+											},
+											"sink": {
+												"name": "orderTypeId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['orderTypeName']"
+											},
+											"sink": {
+												"name": "orderTypeName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['createdByEmployeeId']"
+											},
+											"sink": {
+												"name": "createdByEmployeeId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['createdByEmployeeName']"
+											},
+											"sink": {
+												"name": "createdByEmployeeName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['businessDate']"
+											},
+											"sink": {
+												"name": "businessDate",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['createdAt']"
+											},
+											"sink": {
+												"name": "createdAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['closedAt']"
+											},
+											"sink": {
+												"name": "closedAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['orderNumber']"
+											},
+											"sink": {
+												"name": "orderNumber",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['tableNumber']"
+											},
+											"sink": {
+												"name": "tableNumber",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['scheduled']"
+											},
+											"sink": {
+												"name": "scheduled",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['releasedAt']"
+											},
+											"sink": {
+												"name": "releasedAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['ownerInfo']['employeeId']"
+											},
+											"sink": {
+												"name": "ownerInfo_employeeId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['ownerInfo']['employeeName']"
+											},
+											"sink": {
+												"name": "ownerInfo_employeeName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['ownerInfo']['jobPositionId']"
+											},
+											"sink": {
+												"name": "jobPositionId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['totalAmount']"
+											},
+											"sink": {
+												"name": "totalAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['balanceDueAmount']"
+											},
+											"sink": {
+												"name": "balanceDueAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['name']"
+											},
+											"sink": {
+												"name": "guests_name",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['menuItemId']"
+											},
+											"sink": {
+												"name": "guests_items_menuItemId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['name']"
+											},
+											"sink": {
+												"name": "guests_items_name",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['createdAt']"
+											},
+											"sink": {
+												"name": "guests_items_createdAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['quantity']"
+											},
+											"sink": {
+												"name": "guests_items_quantity",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['preDiscountsAmount']"
+											},
+											"sink": {
+												"name": "guests_items_preDiscountsAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['discountsAmount']"
+											},
+											"sink": {
+												"name": "guests_items_discountsAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['postDiscountsAmount']"
+											},
+											"sink": {
+												"name": "guests_items_postDiscountsAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['taxesAmount']"
+											},
+											"sink": {
+												"name": "guests_items_taxesAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['totalAmount']"
+											},
+											"sink": {
+												"name": "guests_items_totalAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['taxes'][0]['taxId']"
+											},
+											"sink": {
+												"name": "guests_taxes_taxId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['taxes'][0]['taxName']"
+											},
+											"sink": {
+												"name": "guests_taxes_taxName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['taxes'][0]['percentage']"
+											},
+											"sink": {
+												"name": "guests_taxes_percentage",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['taxes'][0]['isInclusive']"
+											},
+											"sink": {
+												"name": "guests_taxes_isInclusive",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['taxes'][0]['amount']"
+											},
+											"sink": {
+												"name": "check_taxes_amount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['void']"
+											},
+											"sink": {
+												"name": "void",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['modifiers'][0]['modifierId']"
+											},
+											"sink": {
+												"name": "modifierId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['modifiers'][0]['modifierOptionId']"
+											},
+											"sink": {
+												"name": "modifierOptionId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['modifiers'][0]['text']"
+											},
+											"sink": {
+												"name": "text",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['preDiscountsAmount']"
+											},
+											"sink": {
+												"name": "modifiers_preDiscountsAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['discountsAmount']"
+											},
+											"sink": {
+												"name": "modifiers_discountsAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['postDiscountsAmount']"
+											},
+											"sink": {
+												"name": "modifiers_postDiscountsAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['taxesAmount']"
+											},
+											"sink": {
+												"name": "modifiers_taxesAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['totalAmount']"
+											},
+											"sink": {
+												"name": "modifiers_totalAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['taxes'][0]['taxId']"
+											},
+											"sink": {
+												"name": "modifiers_taxes_taxId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['taxes'][0]['taxName']"
+											},
+											"sink": {
+												"name": "modifiers_taxes_taxName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['taxes'][0]['percentage']"
+											},
+											"sink": {
+												"name": "modifiers_taxes_percentage",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['taxes'][0]['isInclusive']"
+											},
+											"sink": {
+												"name": "modifiers_taxes_isInclusive",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['subItems'][0]['taxes'][0]['amount']"
+											},
+											"sink": {
+												"name": "imodifiers_taxes_amount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['guests'][0]['items'][0]['giftCardIssueReload']"
+											},
+											"sink": {
+												"name": "giftCardIssueReload",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['paymentOptionId']"
+											},
+											"sink": {
+												"name": "paymentOptionId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['paymentName']"
+											},
+											"sink": {
+												"name": "paymentName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['createdAt']"
+											},
+											"sink": {
+												"name": "payments_createdAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['businessDate']"
+											},
+											"sink": {
+												"name": "payments_businessDate",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['amount']"
+											},
+											"sink": {
+												"name": "payments_amount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['surchargesAmount']"
+											},
+											"sink": {
+												"name": "surcharges_Amount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['tipAmount']"
+											},
+											"sink": {
+												"name": "tipAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['tipDeductionAmount']"
+											},
+											"sink": {
+												"name": "tipDeductionAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['tipAppliedToEmployeeId']"
+											},
+											"sink": {
+												"name": "tipAppliedToEmployeeId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['stationId']"
+											},
+											"sink": {
+												"name": "stationId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['employeeId']"
+											},
+											"sink": {
+												"name": "payments_employeeId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['employeeName']"
+											},
+											"sink": {
+												"name": "payments_employeeName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['cardType']"
+											},
+											"sink": {
+												"name": "cardType",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['cardNumber']"
+											},
+											"sink": {
+												"name": "cardNumber",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['payments'][0]['cardholderName']"
+											},
+											"sink": {
+												"name": "cardholderName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['autoGratuityTaxes'][0]"
+											},
+											"sink": {
+												"name": "autoGratuityTaxes",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['updatedAt']"
+											},
+											"sink": {
+												"name": "updatedAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['teamId']"
+											},
+											"sink": {
+												"name": "teamId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['dayPart']"
+											},
+											"sink": {
+												"name": "dayPart",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['customer']['phone']"
+											},
+											"sink": {
+												"name": "phone"
+											}
+										}
+									],
+									"collectionReference": "$['checks']",
+									"mapComplexValuesToString": true
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Order_RestApi_Dataset_Source",
+									"type": "DatasetReference",
+									"parameters": {
+										"connurl": "@item().weburl",
+										"createdAtStart": {
+											"value": "2025-03-31T00:00:00Z",
+											"type": "Expression"
+										},
+										"createdAtEnd": {
+											"value": "2025-04-01T00:00:00Z",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Order_Sql_Dataset_Destination",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "SpotOnApi/order"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-04-01T19:08:48Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

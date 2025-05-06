@@ -1,0 +1,175 @@
+{
+	"name": "Taxpipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"additionalHeaders": {
+										"x-api-key": "ae26019c-3cf9-4700-bcd1-c57975060532"
+									},
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "$['id']"
+											},
+											"sink": {
+												"name": "id"
+											}
+										},
+										{
+											"source": {
+												"path": "$['locationId']"
+											},
+											"sink": {
+												"name": "locationId"
+											}
+										},
+										{
+											"source": {
+												"path": "$['name']"
+											},
+											"sink": {
+												"name": "name"
+											}
+										},
+										{
+											"source": {
+												"path": "$['deleted']"
+											},
+											"sink": {
+												"name": "deleted"
+											}
+										},
+										{
+											"source": {
+												"path": "$['defaultRatePercentage']"
+											},
+											"sink": {
+												"name": "defaultRatePercentage"
+											}
+										},
+										{
+											"source": {
+												"path": "$['rateOverrides'][0]['orderTypeId']"
+											},
+											"sink": {
+												"name": "orderTypeId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['rateOverrides'][0]['percentage']"
+											},
+											"sink": {
+												"name": "percentage",
+												"type": "String"
+											}
+										}
+									],
+									"collectionReference": "$['rateOverrides']"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Tax_Dataset_Rest_source",
+									"type": "DatasetReference",
+									"parameters": {
+										"connurl": "@item().weburl"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Tax_Dataset_Sql_Destination",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT concat('https://restaurantapi.spoton.com/posexport/v1/locations/',id,'/taxes') as weburl\n      \n  FROM [dbo].[location]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "LocationlDsTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"folder": {
+			"name": "SpotOnApi/Taxes"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-03-16T21:34:44Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,256 @@
+{
+	"name": "PaidInOutspipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT concat('https://restaurantapi.spoton.com/posexport/v1/locations/',id,'/paid-in-outs?') as weburl\n      \n  FROM [dbo].[location]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "LocationlDsTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"additionalHeaders": {
+										"x-api-key": "ae26019c-3cf9-4700-bcd1-c57975060532"
+									},
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "$['id']"
+											},
+											"sink": {
+												"name": "id",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['locationId']"
+											},
+											"sink": {
+												"name": "locationId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['deleted']"
+											},
+											"sink": {
+												"name": "deleted",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"path": "$['voided']"
+											},
+											"sink": {
+												"name": "voided",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"path": "$['paymentOptionId']"
+											},
+											"sink": {
+												"name": "paymentOptionId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['amount']"
+											},
+											"sink": {
+												"name": "amount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['notes']"
+											},
+											"sink": {
+												"name": "notes",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['reason']"
+											},
+											"sink": {
+												"name": "reason",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['employeeId']"
+											},
+											"sink": {
+												"name": "employeeId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['employeeName']"
+											},
+											"sink": {
+												"name": "employeeName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['kind']"
+											},
+											"sink": {
+												"name": "kind",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['createdAt']"
+											},
+											"sink": {
+												"name": "createdAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['businessDate']"
+											},
+											"sink": {
+												"name": "businessDate",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['dayPart']"
+											},
+											"sink": {
+												"name": "dayPart",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['paymentName']"
+											},
+											"sink": {
+												"name": "paymentName",
+												"type": "String"
+											}
+										}
+									],
+									"collectionReference": ""
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "PaidInOuts_Dataset_RestApi_Source",
+									"type": "DatasetReference",
+									"parameters": {
+										"connurl": "@item().weburl",
+										"createdAtStart": {
+											"value": "@formatDateTime(addToTime(utcnow(), -60,'Month'), 'yyyy-MM-ddTHH:mm:ssZ')",
+											"type": "Expression"
+										},
+										"createdAtEnd": "@formatDateTime(utcnow(),'yyy-MM-ddTHH:mm:ssZ')"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "PaidInOuts_Dataset_Sql_Destination",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "SpotOnApi/PaidInOuts"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-04-05T18:34:45Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,20 @@
+{
+	"name": "station_sql_dataset_destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "station_sql_linked_destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/station"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "station"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

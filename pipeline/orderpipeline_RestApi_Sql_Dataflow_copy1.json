@@ -1,0 +1,85 @@
+{
+	"name": "orderpipeline_RestApi_Sql_Dataflow_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT \n    CONCAT(    'https://restaurantapi.spoton.com/posexport/v1/locations/',\n        l.id,\n        '/orders?createdAtStart=',\n        FORMAT(CAST(d.createdAtStart AS DATETIME), 'yyyy-MM-ddTHH:mm:ssZ'),\n        '&createdAtEnd=',\n        FORMAT(CAST(d.createdAtEnd AS DATETIME), 'yyyy-MM-ddTHH:mm:ssZ')\n    ) AS weburl\nFROM [dbo].[location] l\nCROSS JOIN [dbo].[dateLoop] d;\n",
+						"queryTimeout": "04:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "LocationlDsTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Data flow1",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "dataflow1",
+									"type": "DataFlowReference"
+								},
+								"compute": {
+									"coreCount": 16,
+									"computeType": "General"
+								},
+								"traceLevel": "Fine"
+							}
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "SpotOnApi/order"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-05-01T11:38:56Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

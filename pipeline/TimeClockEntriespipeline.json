@@ -1,0 +1,242 @@
+{
+	"name": "TimeClockEntriespipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT concat('https://restaurantapi.spoton.com/posexport/v1/locations/',id,'/time-clock-entries?') as weburl\n      \n  FROM [dbo].[location]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "LocationlDsTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"additionalHeaders": {
+										"x-api-key": "ae26019c-3cf9-4700-bcd1-c57975060532"
+									},
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "$['id']"
+											},
+											"sink": {
+												"name": "id",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['locationId']"
+											},
+											"sink": {
+												"name": "locationId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['deleted']"
+											},
+											"sink": {
+												"name": "deleted",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['voided']"
+											},
+											"sink": {
+												"name": "voided",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['employeeId']"
+											},
+											"sink": {
+												"name": "employeeId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['jobPositionId']"
+											},
+											"sink": {
+												"name": "jobPositionId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['payRateAmount']"
+											},
+											"sink": {
+												"name": "payRateAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['declaredCashTipsAmount']"
+											},
+											"sink": {
+												"name": "declaredCashTipsAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['declaredCashTipsToOthersAmount']"
+											},
+											"sink": {
+												"name": "declaredCashTipsToOthersAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['inAt']"
+											},
+											"sink": {
+												"name": "inAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['outAt']"
+											},
+											"sink": {
+												"name": "outAt",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['breaks'][0]"
+											},
+											"sink": {
+												"name": "items",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['lastUpdatedAt']"
+											},
+											"sink": {
+												"name": "lastUpdatedAt",
+												"type": "String"
+											}
+										}
+									],
+									"collectionReference": "$['breaks']"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "TimeClockEntries_Dataset_RestAPI_Source",
+									"type": "DatasetReference",
+									"parameters": {
+										"connurl": {
+											"value": "@item().weburl",
+											"type": "Expression"
+										},
+										"updatedAtStart": {
+											"value": "@formatDateTime(addDays(utcnow(),-1),'yyyy-MM-ddTHH:mm:ssZ')",
+											"type": "Expression"
+										},
+										"updatedAtEnd": "@formatDateTime(utcnow(),'yyy-MM-ddTHH:mm:ssZ')"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "TimeClockEntries_Dataset_Sql_Destination",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "SpotOnApi/TimeClockEntries"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-03-23T17:13:17Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

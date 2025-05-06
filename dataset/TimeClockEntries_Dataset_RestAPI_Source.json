@@ -1,0 +1,37 @@
+{
+	"name": "TimeClockEntries_Dataset_RestAPI_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TimeClockEntries_RestApi_Linked_Source",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string",
+				"defaultValue": "@item().weburl"
+			},
+			"updatedAtStart": {
+				"type": "string"
+			},
+			"updatedAtEnd": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/TimeClockEntries"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat(\n    '?updatedAtStart=',\n    formatDateTime(dataset().updatedAtStart, 'yyyy-MM-ddTHH:mm:ssZ'),\n    '&updatedAtEnd=',\n    formatDateTime(addMinutes(dataset().updatedAtEnd, -5), 'yyyy-MM-ddTHH:mm:ssZ')\n)",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

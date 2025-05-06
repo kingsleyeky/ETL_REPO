@@ -1,0 +1,211 @@
+{
+	"name": "menuitempipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT concat('https://restaurantapi.spoton.com/posexport/v1/locations/',id,'/menu-items') as weburl\n      \n  FROM [dbo].[location]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "LocationlDsTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"additionalHeaders": {
+										"x-api-key": "ae26019c-3cf9-4700-bcd1-c57975060532"
+									},
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "$['id']"
+											},
+											"sink": {
+												"name": "id",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['locationId']"
+											},
+											"sink": {
+												"name": "locationId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['deleted']"
+											},
+											"sink": {
+												"name": "deleted",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"path": "$['available']"
+											},
+											"sink": {
+												"name": "available",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"path": "$['name']"
+											},
+											"sink": {
+												"name": "name",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['openItem']"
+											},
+											"sink": {
+												"name": "openItem",
+												"type": "Boolean"
+											}
+										},
+										{
+											"source": {
+												"path": "$['reportCategoryId']"
+											},
+											"sink": {
+												"name": "reportCategoryId",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['standardPriceAmount']"
+											},
+											"sink": {
+												"name": "standardPriceAmount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['plu']"
+											},
+											"sink": {
+												"name": "plu",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['additionalIds']['reference']"
+											},
+											"sink": {
+												"name": "reference"
+											}
+										},
+										{
+											"source": {
+												"path": "$['additionalIds']['barcode']"
+											},
+											"sink": {
+												"name": "barcode"
+											}
+										}
+									]
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Generic_without_Daterangeparameter_DataSet_RestApi_source",
+									"type": "DatasetReference",
+									"parameters": {
+										"connurl": "@item().weburl"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "LocationmenuitemsTable",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "SpotOnApi/menuitem"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-05-01T18:40:05Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

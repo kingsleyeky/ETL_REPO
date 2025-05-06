@@ -1,0 +1,37 @@
+{
+	"name": "Generic_withoutparameter_Database_Dataset_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Generic_Database_LinkedService_Destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/Generic"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "varchar"
+			},
+			{
+				"name": "locationId",
+				"type": "varchar"
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "deleted",
+				"type": "bit"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "menuitem"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

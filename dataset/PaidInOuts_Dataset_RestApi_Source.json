@@ -1,0 +1,36 @@
+{
+	"name": "PaidInOuts_Dataset_RestApi_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PaidInOuts_linked_service_Rest_Api_Source",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string"
+			},
+			"createdAtStart": {
+				"type": "string"
+			},
+			"createdAtEnd": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/paidInOuts"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat( '?createdAtStart=',formatDateTime(dataset().createdAtStart, 'yyyy-MM-ddTHH:mm:ssZ'),     '&createdAtEnd=',     formatDateTime(addMinutes(dataset().createdAtEnd, -5), 'yyyy-MM-ddTHH:mm:ssZ') )",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

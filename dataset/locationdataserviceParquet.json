@@ -1,0 +1,25 @@
+{
+	"name": "locationdataserviceParquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkserviceDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/Location"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "locationdata.parquet",
+				"folderPath": "Location",
+				"fileSystem": "spoton-temp-data"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

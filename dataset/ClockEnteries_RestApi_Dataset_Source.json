@@ -1,0 +1,37 @@
+{
+	"name": "ClockEnteries_RestApi_Dataset_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TimeClockEntries_RestApi_Linked_Source",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"baseurl": "@item().weburl"
+			}
+		},
+		"parameters": {
+			"connurl": {
+				"type": "string",
+				"defaultValue": "@item().weburl"
+			},
+			"updatedAtStart": {
+				"type": "string"
+			},
+			"updatedAtEnd": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "SpotonDatasets/ClockEnteries"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat(     '?updatedAtStart=',     formatDateTime(dataset().updatedAtStart, 'yyyy-MM-ddTHH:mm:ssZ'),     '&updatedAtEnd=',     formatDateTime(addMinutes(dataset().updatedAtEnd, -5), 'yyyy-MM-ddTHH:mm:ssZ') )",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

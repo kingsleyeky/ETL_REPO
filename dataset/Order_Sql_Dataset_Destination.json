@@ -1,0 +1,115 @@
+{
+	"name": "Order_Sql_Dataset_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Order_Sql_Linked_Destination",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SpotonDatasets/Order"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "varchar"
+			},
+			{
+				"name": "BusinessDate",
+				"type": "varchar"
+			},
+			{
+				"name": "BalanceDueAmount",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "ClosedAt",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "CreatedAt",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "CreatedByEmployeeId",
+				"type": "varchar"
+			},
+			{
+				"name": "CreatedByEmployeeName",
+				"type": "varchar"
+			},
+			{
+				"name": "CustomerId",
+				"type": "varchar"
+			},
+			{
+				"name": "DayPart",
+				"type": "varchar"
+			},
+			{
+				"name": "Deleted",
+				"type": "bit"
+			},
+			{
+				"name": "LocationId",
+				"type": "varchar"
+			},
+			{
+				"name": "Name",
+				"type": "varchar"
+			},
+			{
+				"name": "OrderNumber",
+				"type": "varchar"
+			},
+			{
+				"name": "OrderTypeId",
+				"type": "varchar"
+			},
+			{
+				"name": "OrderTypeName",
+				"type": "varchar"
+			},
+			{
+				"name": "ReleasedAt",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Scheduled",
+				"type": "bit"
+			},
+			{
+				"name": "TableNumber",
+				"type": "varchar"
+			},
+			{
+				"name": "TeamId",
+				"type": "varchar"
+			},
+			{
+				"name": "TotalAmount",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "UpdatedAt",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "New_Orders"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
