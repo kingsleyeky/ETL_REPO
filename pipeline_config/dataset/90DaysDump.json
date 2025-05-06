@@ -16,7 +16,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileSystem": {
-					"value": "@dataset().filePath",
+					"value": "@concat(\n    'raw-spoton-data/locations_data/90_days_retrieval/',dataset().filePath\n)\n\n\n",
 					"type": "Expression"
 				}
 			}
