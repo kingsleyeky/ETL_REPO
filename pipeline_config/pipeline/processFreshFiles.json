@@ -69,7 +69,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"fileName": {
-											"value": "@{item().name}",
+											"value": "@item().name",
 											"type": "Expression"
 										}
 									}
@@ -213,8 +213,11 @@
 												"referenceName": "dataflow1",
 												"type": "DataFlowReference",
 												"datasetParameters": {
-													"source1": {
-														"fileName": "@item().name"
+													"freshOrdersData": {
+														"fileName": {
+															"value": "@item().name",
+															"type": "Expression"
+														}
 													}
 												}
 											},
