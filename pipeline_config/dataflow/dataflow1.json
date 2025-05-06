@@ -12,7 +12,15 @@
 					"name": "freshOrdersData"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DB_dataset",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "unrollByChecks"
@@ -27,7 +35,7 @@
 					"name": "unrollByTaxes"
 				},
 				{
-					"name": "flatten1"
+					"name": "unrollByPayments"
 				}
 			],
 			"scriptLines": [
@@ -215,7 +223,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> unrollByTaxes",
-				"unrollByTaxes foldDown(unroll(),",
+				"unrollByTaxes foldDown(unroll(payments),",
 				"     mapColumn(",
 				"          id,",
 				"          name,",
@@ -248,16 +256,43 @@
 				"          postDiscountsAmount,",
 				"          taxesAmount,",
 				"          ItemtotalAmount,",
+				"          taxID,",
+				"          taxName,",
+				"          percentage,",
+				"          isInclusive,",
 				"          amount,",
 				"          void,",
-				"          payments,",
+				"          paymentOptionID = payments.paymentOptionId,",
+				"          paymentName = payments.paymentName,",
+				"          paymentCreatedAt = payments.createdAt,",
+				"          paymentsBusinessDate = payments.businessDate,",
+				"          paymentAmount = payments.amount,",
+				"          surchargesAmount = payments.surchargesAmount,",
+				"          tipAmount = payments.tipAmount,",
+				"          tipDeductionAmount = payments.tipDeductionAmount,",
+				"          tipAppliedToEmployeeId = payments.tipAppliedToEmployeeId,",
+				"          stationId = payments.stationId,",
+				"          employeeId = payments.employeeId,",
+				"          employeeName = payments.employeeName,",
+				"          cardType = payments.cardType,",
+				"          cardNumber = payments.cardNumber,",
+				"          cardholderName = payments.cardholderName,",
 				"          updatedAt,",
 				"          teamId,",
-				"          dayPart,",
-				"          customer",
+				"          dayPart",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1"
+				"     skipDuplicateMapOutputs: false) ~> unrollByPayments",
+				"unrollByPayments sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
