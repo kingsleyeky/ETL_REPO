@@ -97,7 +97,7 @@
 				"typeProperties": {
 					"variableName": "fileName",
 					"value": {
-						"value": "@concat(\n    'raw-spoton-data/locations_data/',\n    formatDateTime(variables('startTime'), 'yyyyMMdd-HHmmss'),\n    '_',\n    formatDateTime(variables('endTime'), 'yyyyMMdd-HHmmss'),\n    '/',\n    toLower(pipeline().parameters.locationID),\n    '_orders.json'\n)",
+						"value": "@concat(\n    'raw-spoton-data/locations_data/',\n    formatDateTime(variables('startTime'), 'yyyyMMdd-HHmmss'),\n    '_',\n    formatDateTime(variables('endTime'), 'yyyyMMdd-HHmmss')\n)",
 						"type": "Expression"
 					}
 				}
@@ -170,6 +170,56 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "updateExecutionTracker",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[InsertPipelineRun]",
+					"storedProcedureParameters": {
+						"LastRunTime": {
+							"value": {
+								"value": "@variables('endTime')",
+								"type": "Expression"
+							},
+							"type": "Datetime"
+						},
+						"LocationID": {
+							"value": {
+								"value": "@pipeline().parameters.locationID",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineRunID": {
+							"value": {
+								"value": "@pipeline().parameters.runID",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "db_link",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
