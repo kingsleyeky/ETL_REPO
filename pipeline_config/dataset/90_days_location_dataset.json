@@ -22,11 +22,10 @@
 					"value": "@dataset().fileName",
 					"type": "Expression"
 				},
-				"folderPath": {
-					"value": "locations_data/90_days_retrieval/@{dataset().location_folder}",
+				"fileSystem": {
+					"value": "@dataset().location_folder",
 					"type": "Expression"
-				},
-				"fileSystem": "raw-spoton-data"
+				}
 			}
 		},
 		"schema": {}
