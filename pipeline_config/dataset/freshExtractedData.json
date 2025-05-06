@@ -15,10 +15,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": {
-					"value": "@dataset().filePath",
-					"type": "Expression"
-				}
+				"folderPath": "@dataset().filePath",
+				"fileSystem": "raw-spoton-data"
 			}
 		},
 		"schema": {}
