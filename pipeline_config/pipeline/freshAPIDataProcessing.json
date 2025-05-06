@@ -164,7 +164,7 @@
 								"type": "Expression"
 							},
 							"fileName": {
-								"value": "@concat(pipeline().parameters.locationID, formatDateTime(variables('startTime'), 'yyyyMMdd-HHmmss'),\n    '_',\n    formatDateTime(variables('endTime'), 'yyyyMMdd-HHmmss'),'_orders.json')",
+								"value": "@concat(pipeline().parameters.locationID, '_' ,formatDateTime(variables('startTime'), 'yyyyMMdd-HHmmss'),\n    '_',\n    formatDateTime(variables('endTime'), 'yyyyMMdd-HHmmss'),'_orders.json')",
 								"type": "Expression"
 							}
 						}
