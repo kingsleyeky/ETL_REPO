@@ -51,7 +51,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@pipeline().parameters.LocationIDs",
+						"value": "@pipeline().parameters.locationList",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -65,7 +65,21 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"waitOnCompletion": true
+								"pipeline": {
+									"referenceName": "freshAPIDataProcessing",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"locationID": {
+										"value": "@item()",
+										"type": "Expression"
+									},
+									"runID": {
+										"value": "@variables('runID')",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
