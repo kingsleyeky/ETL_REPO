@@ -125,8 +125,7 @@
 								"sink": {
 									"type": "JsonSink",
 									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings",
-										"copyBehavior": "FlattenHierarchy"
+										"type": "AzureBlobFSWriteSettings"
 									},
 									"formatSettings": {
 										"type": "JsonWriteSettings"
@@ -156,10 +155,10 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "90_days_location_dataset",
+									"referenceName": "90DaysDump",
 									"type": "DatasetReference",
 									"parameters": {
-										"location_folder": {
+										"filepath": {
 											"value": "@variables('fileName')",
 											"type": "Expression"
 										}
