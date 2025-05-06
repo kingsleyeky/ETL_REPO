@@ -8,6 +8,9 @@
 		"parameters": {
 			"filePath": {
 				"type": "string"
+			},
+			"fileName": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -15,7 +18,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "@dataset().filePath",
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat('locations_data/',dataset().filePath)",
+					"type": "Expression"
+				},
 				"fileSystem": "raw-spoton-data"
 			}
 		},
