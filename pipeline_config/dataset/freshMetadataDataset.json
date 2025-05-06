@@ -1,0 +1,19 @@
+{
+	"name": "freshMetadataDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "raw_spoton_data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "locations_data/fresh_data",
+				"fileSystem": "raw-spoton-data"
+			}
+		},
+		"schema": {}
+	}
+}

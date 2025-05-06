@@ -1,0 +1,210 @@
+{
+	"name": "fetchLast90DaysData",
+	"properties": {
+		"activities": [
+			{
+				"name": "checkForDates",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "dateIntervalsDataset",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "runForEachDate",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "checkForDates",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('checkForDates').output.value\n",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Set_startTime",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "startTime",
+								"value": {
+									"value": "@item().startTime",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set_endTime",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set_startTime",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "endTime",
+								"value": {
+									"value": "@item().endTime",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "fetchData",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Set_fileName",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "api_dataset",
+									"type": "DatasetReference",
+									"parameters": {
+										"locationid": {
+											"value": "@pipeline().parameters.locationID",
+											"type": "Expression"
+										},
+										"startTime": {
+											"value": "@variables('startTime')",
+											"type": "Expression"
+										},
+										"endTime": {
+											"value": "@variables('endTime')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "90DaysDump",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "Set_fileName",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set_endTime",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "fileName",
+								"value": {
+									"value": "@concat(\n    'raw-spoton-data/locations_data/90_days_retrieval/',\n    pipeline().parameters.locationID\n)",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"locationID": {
+				"type": "string",
+				"defaultValue": "Location16075"
+			}
+		},
+		"variables": {
+			"startTime": {
+				"type": "String"
+			},
+			"endTime": {
+				"type": "String"
+			},
+			"fileName": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

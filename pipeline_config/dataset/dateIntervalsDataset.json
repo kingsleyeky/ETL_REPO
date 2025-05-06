@@ -1,0 +1,29 @@
+{
+	"name": "dateIntervalsDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "raw_spoton_data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dateintervals.json",
+				"fileSystem": "raw-spoton-data"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"startTime": {
+					"type": "string"
+				},
+				"endTime": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

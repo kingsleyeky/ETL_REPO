@@ -1,15 +1,15 @@
 {
-	"name": "transformDataIntoDB",
+	"name": "transformFreshDataIntoDB",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "metadataSize",
+						"referenceName": "freshMetadataSize",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "freshOrdersData"
 				}
 			],
 			"sinks": [
@@ -23,13 +23,13 @@
 			],
 			"transformations": [
 				{
-					"name": "flatten1"
+					"name": "unrollByChecks"
 				},
 				{
-					"name": "flatten2"
+					"name": "unrollByGuests"
 				},
 				{
-					"name": "flatten3"
+					"name": "unrollByItems"
 				},
 				{
 					"name": "unrollByTaxes"
@@ -58,7 +58,7 @@
 				"          ownerInfo as (employeeId as string, employeeName as string, jobPositionId as string),",
 				"          totalAmount as string,",
 				"          balanceDueAmount as string,",
-				"          checks as (gratuityAmount as string, totalAmount as string, paymentsAmount as string, balanceAmount as string, items as string[], voidedItems as string[], guests as (name as string, items as (menuItemId as string, name as string, createdAt as string, quantity as string, preDiscountsAmount as string, discountsAmount as string, postDiscountsAmount as string, taxesAmount as string, totalAmount as string, discounts as string[], taxes as (taxId as string, taxName as string, percentage as string, isInclusive as boolean, amount as string)[], void as string, subItems as string[], modifiers as (modifierId as string, modifierOptionId as string, text as string, preDiscountsAmount as string, discountsAmount as string, postDiscountsAmount as string, taxesAmount as string, totalAmount as string, discounts as string[], taxes as (taxId as string, taxName as string, percentage as string, isInclusive as boolean, amount as string)[])[], giftCardIssueReload as boolean)[], voidedItems as string[])[], surcharges as string[], payments as (paymentOptionId as string, paymentName as string, createdAt as string, businessDate as string, amount as string, surcharges as string[], surchargesAmount as string, tipAmount as string, tipDeductionAmount as string, tipAppliedToEmployeeId as string, stationId as string, employeeId as string, employeeName as string, cardType as string, cardNumber as string, cardholderName as string)[], autoGratuityTaxes as string[])[],",
+				"          checks as (gratuityAmount as string, totalAmount as string, paymentsAmount as string, balanceAmount as string, items as string[], voidedItems as string[], guests as (name as string, items as (menuItemId as string, name as string, createdAt as string, quantity as string, preDiscountsAmount as string, discountsAmount as string, postDiscountsAmount as string, taxesAmount as string, totalAmount as string, discounts as string[], taxes as (taxId as string, taxName as string, percentage as string, isInclusive as boolean, amount as string)[], void as string, subItems as string[], modifiers as string[], giftCardIssueReload as boolean)[], voidedItems as string[])[], surcharges as string[], payments as (paymentOptionId as string, paymentName as string, createdAt as string, businessDate as string, amount as string, surcharges as string[], surchargesAmount as string, tipAmount as string, tipDeductionAmount as string, tipAppliedToEmployeeId as string, stationId as string, employeeId as string, employeeName as string, cardType as string, cardNumber as string, cardholderName as string)[], autoGratuityTaxes as string[])[],",
 				"          updatedAt as string,",
 				"          teamId as string,",
 				"          dayPart as string,",
@@ -67,8 +67,8 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine') ~> source1",
-				"source1 foldDown(unroll(checks),",
+				"     documentForm: 'documentPerLine') ~> freshOrdersData",
+				"freshOrdersData foldDown(unroll(checks),",
 				"     mapColumn(",
 				"          id,",
 				"          name,",
@@ -99,8 +99,8 @@
 				"          customer",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"flatten1 foldDown(unroll(guests),",
+				"     skipDuplicateMapOutputs: false) ~> unrollByChecks",
+				"unrollByChecks foldDown(unroll(guests),",
 				"     mapColumn(",
 				"          id,",
 				"          name,",
@@ -132,8 +132,8 @@
 				"          customer",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten2",
-				"flatten2 foldDown(unroll(items),",
+				"     skipDuplicateMapOutputs: false) ~> unrollByGuests",
+				"unrollByGuests foldDown(unroll(items),",
 				"     mapColumn(",
 				"          id,",
 				"          name,",
@@ -157,7 +157,7 @@
 				"          paymentsAmount,",
 				"          balanceAmount,",
 				"          guestsName,",
-				"          menuItemId = items.menuItemId,",
+				"          itemsMenuItemID = items.menuItemId,",
 				"          itemName = items.name,",
 				"          itemCreatedAt = items.createdAt,",
 				"          quantity = items.quantity,",
@@ -165,19 +165,18 @@
 				"          discountsAmount = items.discountsAmount,",
 				"          postDiscountsAmount = items.postDiscountsAmount,",
 				"          taxesAmount = items.taxesAmount,",
-				"          itemTotalAmount = items.totalAmount,",
-				"          void = items.void,",
+				"          ItemtotalAmount = items.totalAmount,",
 				"          taxes = items.taxes,",
-				"          modifiers = items.modifiers,",
-				"          payments = payments,",
-				"          customer = customer,",
+				"          void = items.void,",
+				"          payments,",
 				"          updatedAt,",
 				"          teamId,",
-				"          dayPart",
+				"          dayPart,",
+				"          customer",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten3",
-				"flatten3 foldDown(unroll(taxes),",
+				"     skipDuplicateMapOutputs: false) ~> unrollByItems",
+				"unrollByItems foldDown(unroll(taxes),",
 				"     mapColumn(",
 				"          id,",
 				"          name,",
@@ -201,7 +200,7 @@
 				"          paymentsAmount,",
 				"          balanceAmount,",
 				"          guestsName,",
-				"          menuItemId,",
+				"          itemsMenuItemID,",
 				"          itemName,",
 				"          itemCreatedAt,",
 				"          quantity,",
@@ -209,19 +208,18 @@
 				"          discountsAmount,",
 				"          postDiscountsAmount,",
 				"          taxesAmount,",
-				"          itemTotalAmount,",
-				"          void,",
-				"          taxid = taxes.taxId,",
+				"          ItemtotalAmount,",
+				"          taxID = taxes.taxId,",
 				"          taxName = taxes.taxName,",
 				"          percentage = taxes.percentage,",
 				"          isInclusive = taxes.isInclusive,",
 				"          amount = taxes.amount,",
-				"          modifiers,",
+				"          void,",
 				"          payments,",
-				"          customer,",
 				"          updatedAt,",
 				"          teamId,",
-				"          dayPart",
+				"          dayPart,",
+				"          customer",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> unrollByTaxes",
@@ -249,7 +247,7 @@
 				"          paymentsAmount,",
 				"          balanceAmount,",
 				"          guestsName,",
-				"          menuItemId,",
+				"          itemsMenuItemID,",
 				"          itemName,",
 				"          itemCreatedAt,",
 				"          quantity,",
@@ -257,17 +255,17 @@
 				"          discountsAmount,",
 				"          postDiscountsAmount,",
 				"          taxesAmount,",
-				"          itemTotalAmount,",
-				"          void,",
-				"          taxid,",
+				"          ItemtotalAmount,",
+				"          taxID,",
 				"          taxName,",
 				"          percentage,",
 				"          isInclusive,",
-				"          taxAmount = amount,",
+				"          amount,",
+				"          void,",
 				"          paymentOptionID = payments.paymentOptionId,",
 				"          paymentName = payments.paymentName,",
 				"          paymentCreatedAt = payments.createdAt,",
-				"          paymentBusinessDate = payments.businessDate,",
+				"          paymentsBusinessDate = payments.businessDate,",
 				"          paymentAmount = payments.amount,",
 				"          surchargesAmount = payments.surchargesAmount,",
 				"          tipAmount = payments.tipAmount,",
@@ -294,11 +292,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          each(match(/* All input columns */ true()),",
-				"               /* Input name */ $$ = $$)",
-				"     )) ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}

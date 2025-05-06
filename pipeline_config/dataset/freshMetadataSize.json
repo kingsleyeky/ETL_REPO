@@ -1,5 +1,5 @@
 {
-	"name": "metadataSize",
+	"name": "freshMetadataSize",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "raw_spoton_data",
@@ -19,7 +19,7 @@
 					"value": "@dataset().fileName",
 					"type": "Expression"
 				},
-				"folderPath": "locations_data/90_days_retrieval",
+				"folderPath": "locations_data/fresh_data",
 				"fileSystem": "raw-spoton-data"
 			}
 		},
@@ -187,62 +187,7 @@
 														"type": "array"
 													},
 													"modifiers": {
-														"type": "array",
-														"items": {
-															"type": "object",
-															"properties": {
-																"modifierId": {
-																	"type": "string"
-																},
-																"modifierOptionId": {
-																	"type": "string"
-																},
-																"text": {
-																	"type": "string"
-																},
-																"preDiscountsAmount": {
-																	"type": "string"
-																},
-																"discountsAmount": {
-																	"type": "string"
-																},
-																"postDiscountsAmount": {
-																	"type": "string"
-																},
-																"taxesAmount": {
-																	"type": "string"
-																},
-																"totalAmount": {
-																	"type": "string"
-																},
-																"discounts": {
-																	"type": "array"
-																},
-																"taxes": {
-																	"type": "array",
-																	"items": {
-																		"type": "object",
-																		"properties": {
-																			"taxId": {
-																				"type": "string"
-																			},
-																			"taxName": {
-																				"type": "string"
-																			},
-																			"percentage": {
-																				"type": "string"
-																			},
-																			"isInclusive": {
-																				"type": "boolean"
-																			},
-																			"amount": {
-																				"type": "string"
-																			}
-																		}
-																	}
-																}
-															}
-														}
+														"type": "array"
 													},
 													"giftCardIssueReload": {
 														"type": "boolean"

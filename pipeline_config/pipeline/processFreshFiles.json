@@ -1,5 +1,5 @@
 {
-	"name": "ProcessFiles",
+	"name": "processFreshFiles",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "MetadataDataset",
+						"referenceName": "freshMetadataDataset",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -65,10 +65,13 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "metadataSize",
+									"referenceName": "freshMetadataSize",
 									"type": "DatasetReference",
 									"parameters": {
-										"fileName": "@{item().name}"
+										"fileName": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
 									}
 								},
 								"fieldList": [
@@ -139,13 +142,10 @@
 										},
 										"inputs": [
 											{
-												"referenceName": "metadataSize",
+												"referenceName": "freshMetadataSize",
 												"type": "DatasetReference",
 												"parameters": {
-													"fileName": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
+													"fileName": "@item().name"
 												}
 											}
 										],
@@ -180,13 +180,10 @@
 										"userProperties": [],
 										"typeProperties": {
 											"dataset": {
-												"referenceName": "metadataSize",
+												"referenceName": "freshMetadataSize",
 												"type": "DatasetReference",
 												"parameters": {
-													"fileName": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
+													"fileName": "@item().name"
 												}
 											},
 											"enableLogging": false,
@@ -213,10 +210,10 @@
 										"userProperties": [],
 										"typeProperties": {
 											"dataflow": {
-												"referenceName": "transformDataIntoDB",
+												"referenceName": "transformFreshDataIntoDB",
 												"type": "DataFlowReference",
 												"datasetParameters": {
-													"source1": {
+													"freshOrdersData": {
 														"fileName": {
 															"value": "@item().name",
 															"type": "Expression"
@@ -275,7 +272,7 @@
 										},
 										"inputs": [
 											{
-												"referenceName": "metadataSize",
+												"referenceName": "freshMetadataSize",
 												"type": "DatasetReference",
 												"parameters": {
 													"fileName": {
@@ -316,7 +313,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"dataset": {
-												"referenceName": "metadataSize",
+												"referenceName": "freshMetadataSize",
 												"type": "DatasetReference",
 												"parameters": {
 													"fileName": {

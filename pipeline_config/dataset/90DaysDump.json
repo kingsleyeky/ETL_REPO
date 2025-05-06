@@ -1,0 +1,19 @@
+{
+	"name": "90DaysDump",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "raw_spoton_data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "locations_data/90_days_retrieval",
+				"fileSystem": "raw-spoton-data"
+			}
+		},
+		"schema": {}
+	}
+}

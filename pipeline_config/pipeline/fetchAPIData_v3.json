@@ -1,0 +1,144 @@
+{
+	"name": "fetchAPIData_v3",
+	"properties": {
+		"activities": [
+			{
+				"name": "setCurrentTime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "currentTime",
+					"value": {
+						"value": "@utcnow()",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "setRunID",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "setCurrentTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "runID",
+					"value": {
+						"value": "@guid()",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "processLocations",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "setRunID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.locationList",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "freshAPIDataProcessing",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"locationID": {
+										"value": "@item()",
+										"type": "Expression"
+									},
+									"runID": {
+										"value": "@variables('runID')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "transformIntoDB",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "processLocations",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "processFreshFiles",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"parameters": {
+			"locationList": {
+				"type": "array",
+				"defaultValue": [
+					"Location16075",
+					"Location19150"
+				]
+			},
+			"runFrequencyHours": {
+				"type": "int",
+				"defaultValue": 4
+			},
+			"overrideStartTime": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"currentTime": {
+				"type": "String"
+			},
+			"runID": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

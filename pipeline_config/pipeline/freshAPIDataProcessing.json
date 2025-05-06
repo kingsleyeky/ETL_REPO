@@ -1,0 +1,253 @@
+{
+	"name": "freshAPIDataProcessing",
+	"properties": {
+		"activities": [
+			{
+				"name": "getLastRunTime",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT ISNULL(\n  (SELECT TOP 1 LastRunTime \n   FROM PipelineExecutionTracker \n   WHERE LocationID = '@{pipeline().parameters.locationID}'\n   ORDER BY LastRunTime DESC),\n  DATEADD(HOUR, -24, GETUTCDATE())\n) AS LastRunTime",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "pipelineTracker",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "setStartTime",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "getLastRunTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "startTime",
+					"value": {
+						"value": "@coalesce(  activity('getLastRunTime').output.firstRow?.LastRunTime,\n  formatDateTime(addHours(utcNow(), -24), 'yyyy-MM-ddTHH:mm:ssZ')\n)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "setEndTime",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "setStartTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "endTime",
+					"value": {
+						"value": "@formatDateTime(addMinutes(utcNow(), -5), 'yyyy-MM-ddTHH:mm:ssZ')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "setFileName",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "setEndTime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "fileName",
+					"value": {
+						"value": "@concat(\n    'raw-spoton-data/locations_data/fresh_data'\n)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "setFileName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "freshAPIDataset",
+						"type": "DatasetReference",
+						"parameters": {
+							"url": {
+								"value": "@concat(\n  '/posexport/v1/locations/',\n  pipeline().parameters.locationID,\n  '/orders?createdAtStart=',\n  replace(formatDateTime(variables('startTime'), 'yyyy-MM-ddTHH:mm:ss'), ':', '%3A'),\n  'Z&createdAtEnd=',\n  replace(formatDateTime(variables('endTime'), 'yyyy-MM-ddTHH:mm:ss'), ':', '%3A'),\n  'Z'\n)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "freshExtractedData",
+						"type": "DatasetReference",
+						"parameters": {
+							"filePath": {
+								"value": "@variables('fileName')",
+								"type": "Expression"
+							},
+							"fileName": {
+								"value": "@concat(pipeline().parameters.locationID, '_' ,formatDateTime(variables('startTime'), 'yyyyMMdd-HHmmss'),\n    '_',\n    formatDateTime(variables('endTime'), 'yyyyMMdd-HHmmss'),'_orders.json')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "updateExecutionTracker",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[InsertPipelineRun]",
+					"storedProcedureParameters": {
+						"LastRunTime": {
+							"value": {
+								"value": "@variables('endTime')",
+								"type": "Expression"
+							},
+							"type": "Datetime"
+						},
+						"LocationID": {
+							"value": {
+								"value": "@pipeline().parameters.locationID",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"PipelineRunID": {
+							"value": {
+								"value": "@pipeline().parameters.runID",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "db_link",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"locationID": {
+				"type": "string"
+			},
+			"runFrequencyHours": {
+				"type": "string",
+				"defaultValue": "4"
+			},
+			"overrideStartTime": {
+				"type": "string"
+			},
+			"runID": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"startTime": {
+				"type": "String"
+			},
+			"endTime": {
+				"type": "String"
+			},
+			"fileName": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
