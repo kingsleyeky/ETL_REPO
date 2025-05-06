@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"filePath": {
+			"fileName": {
 				"type": "string"
 			}
 		},
@@ -15,10 +15,12 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": {
-					"value": "@concat(\n    'raw-spoton-data/locations_data/90_days_retrieval/',dataset().filePath\n)\n\n\n",
+				"fileName": {
+					"value": "@dataset().fileName",
 					"type": "Expression"
-				}
+				},
+				"folderPath": "locations_data/90_days_retrieval",
+				"fileSystem": "raw-spoton-data"
 			}
 		},
 		"schema": {}
