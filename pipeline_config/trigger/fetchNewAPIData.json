@@ -1,0 +1,17 @@
+{
+	"name": "fetchNewAPIData",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 4,
+				"startTime": "2025-05-06T10:44:00",
+				"timeZone": "W. Central Africa Standard Time"
+			}
+		}
+	}
+}
