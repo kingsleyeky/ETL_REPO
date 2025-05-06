@@ -1,0 +1,26 @@
+{
+	"name": "90DaysDump",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "raw_spoton_data",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filePath": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@dataset().filePath",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	}
+}
